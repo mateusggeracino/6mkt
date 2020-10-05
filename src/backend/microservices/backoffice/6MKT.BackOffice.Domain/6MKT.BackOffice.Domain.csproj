@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>_6MKT.BackOffice.Domain</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="Labels\LabelsBR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LabelsBR.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Labels\LabelsBR.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LabelsBR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
