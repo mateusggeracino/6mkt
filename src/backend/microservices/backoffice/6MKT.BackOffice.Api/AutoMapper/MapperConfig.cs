@@ -9,6 +9,7 @@ namespace _6MKT.BackOffice.Api.AutoMapper
             new MapperConfiguration(config =>
             {
                 config.AddProfile<EntityToResponse>();
+                config.AddProfile<RequestToEntity>();
             });
     }
 }

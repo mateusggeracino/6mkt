@@ -1,4 +1,5 @@
-﻿using _6MKT.BackOffice.Api.Models.Requests;
+﻿using _6MKT.BackOffice.Api.Models.Responses.Business;
+using _6MKT.BackOffice.Api.Models.Responses.NaturalPeople;
 using _6MKT.BackOffice.Domain.Entities;
 using AutoMapper;
 
@@ -8,7 +9,8 @@ namespace _6MKT.BackOffice.Api.AutoMapper.Profiles
     {
         public EntityToResponse()
         {
-            CreateMap<ProviderEntity, ProviderAddViewModel>();
+            CreateMap<NaturalPersonEntity, NaturalPersonResponseViewModel>();
+            CreateMap<BusinessEntity, BusinessResponseViewModel>();
         }
     }
 }
