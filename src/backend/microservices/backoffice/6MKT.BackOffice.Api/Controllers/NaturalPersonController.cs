@@ -23,7 +23,7 @@ namespace _6MKT.BackOffice.Api.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] NaturalPersonAddViewModel naturalPerson)
+        public async Task<IActionResult> Add([FromBody] NaturalPersonAddRequest naturalPerson)
         {
             var naturalPersonEntity = _mapper.Map<NaturalPersonEntity>(naturalPerson);
             await _naturalPersonService.Add(naturalPersonEntity);
@@ -31,7 +31,7 @@ namespace _6MKT.BackOffice.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] NaturalPersonUpdateViewModel naturalPerson)
+        public async Task<IActionResult> Update([FromBody] NaturalPersonUpdateRequest naturalPerson)
         {
             var naturalPersonEntity = _mapper.Map<NaturalPersonEntity>(naturalPerson);
             await _naturalPersonService.Update(naturalPersonEntity);
@@ -39,25 +39,25 @@ namespace _6MKT.BackOffice.Api.Controllers
         }
 
         [HttpDelete("{naturalPersonId:long}")]
-        public async Task<IActionResult> Remove([FromQuery] long naturalPersonId)
+        public async Task<IActionResult> Remove([FromRoute] long naturalPersonId)
         {
             await _naturalPersonService.Remove(naturalPersonId);
             return Ok();
         }
 
         [HttpGet("{naturalPersonId:long}")]
-        public async Task<ActionResult<NaturalPersonResponseViewModel>> GetById([FromQuery] long naturalPersonId)
+        public async Task<ActionResult<NaturalPersonResponse>> GetById([FromRoute] long naturalPersonId)
         {
             var naturalPerson = await _naturalPersonService.GetById(naturalPersonId);
 
-            return Ok(_mapper.Map<NaturalPersonResponseViewModel>(naturalPerson));
+            return Ok(_mapper.Map<NaturalPersonResponse>(naturalPerson));
         }
 
         [HttpGet("get-all")]
-        public async Task<ActionResult<IEnumerable<NaturalPersonResponseViewModel>>> GetAll()
+        public async Task<ActionResult<IEnumerable<NaturalPersonResponse>>> GetAll()
         {
             var naturalPeople = await _naturalPersonService.GetAll();
-            return Ok(_mapper.Map<IEnumerable<NaturalPersonResponseViewModel>>(naturalPeople));
+            return Ok(_mapper.Map<IEnumerable<NaturalPersonResponse>>(naturalPeople));
         }
     }
 }

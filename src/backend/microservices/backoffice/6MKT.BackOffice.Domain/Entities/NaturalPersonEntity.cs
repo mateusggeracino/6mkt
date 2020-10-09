@@ -1,4 +1,5 @@
-﻿using _6MKT.BackOffice.Domain.Entities.Base;
+﻿using System.Collections.Generic;
+using _6MKT.BackOffice.Domain.Entities.Base;
 
 namespace _6MKT.BackOffice.Domain.Entities
 {
@@ -7,5 +8,7 @@ namespace _6MKT.BackOffice.Domain.Entities
         public string SocialNumber { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
+
+        public IEnumerable<PurchaseEntity> Purchases { get; set; }
     }
 }

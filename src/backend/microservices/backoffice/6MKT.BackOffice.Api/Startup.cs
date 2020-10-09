@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using _6MKT.BackOffice.Api.AutoMapper;
 using _6MKT.BackOffice.Api.Extensions;
+using _6MKT.BackOffice.Api.Jobs;
 using _6MKT.BackOffice.Domain.ValueObjects.AppSettings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,7 @@ namespace _6MKT.BackOffice.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHostedService<MigrationJob>();
             services.AddControllers();
 
             services.ConfigureDependencyInjection(_appSettings);

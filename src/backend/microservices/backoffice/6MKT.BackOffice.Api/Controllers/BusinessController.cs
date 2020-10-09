@@ -23,7 +23,7 @@ namespace _6MKT.BackOffice.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] BusinessAddViewModel business)
+        public async Task<IActionResult> Add([FromBody] BusinessAddRequest business)
         {
             var businessEntity = _mapper.Map<BusinessEntity>(business);
             await _businessService.Add(businessEntity);
@@ -31,7 +31,7 @@ namespace _6MKT.BackOffice.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] BusinessUpdateViewModel naturalPerson)
+        public async Task<IActionResult> Update([FromBody] BusinessUpdateRequest naturalPerson)
         {
             var businessEntity = _mapper.Map<BusinessEntity>(naturalPerson);
             await _businessService.Update(businessEntity);
@@ -39,25 +39,25 @@ namespace _6MKT.BackOffice.Api.Controllers
         }
 
         [HttpDelete("{businessId:long}")]
-        public async Task<IActionResult> Remove([FromQuery] long businessId)
+        public async Task<IActionResult> Remove([FromRoute] long businessId)
         {
             await _businessService.Remove(businessId);
             return Ok();
         }
 
         [HttpGet("{businessId:long}")]
-        public async Task<ActionResult<BusinessResponseViewModel>> GetById([FromQuery] long businessId)
+        public async Task<ActionResult<BusinessResponse>> GetById([FromRoute] long businessId)
         {
             var business = await _businessService.GetById(businessId);
 
-            return Ok(_mapper.Map<BusinessResponseViewModel>(business));
+            return Ok(_mapper.Map<BusinessResponse>(business));
         }
 
         [HttpGet("get-all")]
-        public async Task<ActionResult<IEnumerable<BusinessResponseViewModel>>> GetAll()
+        public async Task<ActionResult<IEnumerable<BusinessResponse>>> GetAll()
         {
             var business = await _businessService.GetAll();
-            return Ok(_mapper.Map<IEnumerable<BusinessResponseViewModel>>(business));
+            return Ok(_mapper.Map<IEnumerable<BusinessResponse>>(business));
         }
     }
 }

@@ -9,6 +9,11 @@ namespace _6MKT.BackOffice.Infra.Configuration
         public void Configure(EntityTypeBuilder<BusinessEntity> builder)
         {
             builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.RegisteredNumber).HasMaxLength(20);
+            builder.Property(x => x.TradeName).HasMaxLength(80);
+
+            builder.ToTable("Business", "backoffice");
         }
     }
 }

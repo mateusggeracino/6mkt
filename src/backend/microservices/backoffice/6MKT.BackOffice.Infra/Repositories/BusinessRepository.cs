@@ -10,7 +10,7 @@ namespace _6MKT.BackOffice.Infra.Repositories
 {
     public class BusinessRepository : RepositoryBase<BusinessEntity>, IBusinessRepository
     {
-        public BusinessRepository(AppContext context) : base(context)
+        public BusinessRepository(MktContext context) : base(context)
         {
         }
 

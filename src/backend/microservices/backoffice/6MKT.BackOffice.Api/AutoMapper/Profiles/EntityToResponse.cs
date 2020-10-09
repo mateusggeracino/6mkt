@@ -1,5 +1,9 @@
 ﻿using _6MKT.BackOffice.Api.Models.Responses.Business;
+using _6MKT.BackOffice.Api.Models.Responses.Categories;
 using _6MKT.BackOffice.Api.Models.Responses.NaturalPeople;
+using _6MKT.BackOffice.Api.Models.Responses.Offers;
+using _6MKT.BackOffice.Api.Models.Responses.Purchases;
+using _6MKT.BackOffice.Api.Models.Responses.SubCategories;
 using _6MKT.BackOffice.Domain.Entities;
 using AutoMapper;
 
@@ -9,8 +13,12 @@ namespace _6MKT.BackOffice.Api.AutoMapper.Profiles
     {
         public EntityToResponse()
         {
-            CreateMap<NaturalPersonEntity, NaturalPersonResponseViewModel>();
-            CreateMap<BusinessEntity, BusinessResponseViewModel>();
+            CreateMap<NaturalPersonEntity, NaturalPersonResponse>();
+            CreateMap<BusinessEntity, BusinessResponse>();
+            CreateMap<CategoryEntity, CategoryResponse>();
+            CreateMap<SubCategoryEntity, SubCategoryResponse>();
+            CreateMap<OfferEntity, OfferResponse>();
+            CreateMap<PurchaseEntity, PurchaseResponse>();
         }
     }
 }

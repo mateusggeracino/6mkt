@@ -12,35 +12,35 @@ namespace _6MKT.BackOffice.Infra.Repositories.Base
     {
         protected DbSet<T> DbSet;
 
-        protected RepositoryBase(AppContext context)
+        protected RepositoryBase(MktContext context)
         {
             DbSet = context.Set<T>();
         }
 
-        public async Task Add(T obj) =>
+        public virtual async Task Add(T obj) =>
             await DbSet.AddAsync(obj);
 
-        public async Task Update(T obj)
+        public virtual async Task Update(T obj)
         {
             DbSet.Update(obj);
             await Task.CompletedTask;
         }
 
-        public async Task<T> GetById(long id) =>
+        public virtual async Task<T> GetById(long id) =>
             await DbSet.FindAsync(id);
 
-        public async Task<IEnumerable<T>> GetAll()
+        public virtual async Task<IEnumerable<T>> GetAll()
         {
             return await DbSet.ToListAsync();
         }
 
-        public async Task Remove(T obj)
+        public virtual async Task Remove(T obj)
         {
             DbSet.Remove(obj);
             await Task.CompletedTask;
         }
 
-        public IQueryable<T> NoTracking() =>
+        public virtual IQueryable<T> NoTracking() =>
             DbSet.AsNoTracking();
 
     }

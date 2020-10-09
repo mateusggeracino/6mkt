@@ -9,9 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "microservices", "microservi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backoffice", "backoffice", "{84C384FF-F14B-4281-AD37-D9338762C798}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "6MKT.BackOffice.Api", "microservices\backoffice\6MKT.BackOffice.Api\6MKT.BackOffice.Api.csproj", "{3D9CC18C-85E5-4A89-AB0F-97E9F9FC0454}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "6MKT.BackOffice.Api", "microservices\backoffice\6MKT.BackOffice.Api\6MKT.BackOffice.Api.csproj", "{3D9CC18C-85E5-4A89-AB0F-97E9F9FC0454}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "6MKT.BackOffice.Domain", "microservices\backoffice\6MKT.BackOffice.Domain\6MKT.BackOffice.Domain.csproj", "{F7EF73DB-192A-4B70-86B1-35A2340B2FD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "6MKT.BackOffice.Domain", "microservices\backoffice\6MKT.BackOffice.Domain\6MKT.BackOffice.Domain.csproj", "{F7EF73DB-192A-4B70-86B1-35A2340B2FD0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "6MKT.BackOffice.Infra", "microservices\backoffice\6MKT.BackOffice.Infra\6MKT.BackOffice.Infra.csproj", "{4E5EA9CD-92CD-4B61-A6D0-C9073D4A35D5}"
 EndProject

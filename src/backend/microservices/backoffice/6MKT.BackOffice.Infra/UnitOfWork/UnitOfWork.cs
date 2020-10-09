@@ -6,9 +6,9 @@ namespace _6MKT.BackOffice.Infra.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly AppContext _appContext;
+        private readonly MktContext _appContext;
 
-        public UnitOfWork(AppContext appContext) => _appContext = appContext;
+        public UnitOfWork(MktContext appContext) => _appContext = appContext;
 
         public async Task<bool> Commit() => await _appContext.SaveChangesAsync() > 0;
     }

@@ -1,0 +1,65 @@
+﻿using _6MKT.BackOffice.Domain.Entities;
+using _6MKT.BackOffice.Domain.Repositories.Interfaces;
+using _6MKT.BackOffice.Domain.Services.Interfaces;
+using _6MKT.BackOffice.Domain.UnitOfWork;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using _6MKT.BackOffice.Domain.Exceptions;
+
+namespace _6MKT.BackOffice.Domain.Services
+{
+    public class PurchaseService : IPurchaseService
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IPurchaseRepository _purchaseRepository;
+
+        public PurchaseService(IUnitOfWork unitOfWork, IPurchaseRepository purchaseRepository)
+        {
+            _unitOfWork = unitOfWork;
+            _purchaseRepository = purchaseRepository;
+        }
+
+        public async Task Add(PurchaseEntity purchaseEntity)
+        {
+            var purchaseRegistered = await _purchaseRepository.GetByPurchase(purchaseEntity);
+
+            if (purchaseRegistered != null)
+                throw new ConflictException();
+
+            await _purchaseRepository.Add(purchaseEntity);
+            await _unitOfWork.Commit();
+        }
+
+        public async Task Update(PurchaseEntity purchase)
+        {
+            var purchaseRegistered = await _purchaseRepository.GetById(purchase.Id);
+
+            if (purchaseRegistered == null)
+                throw new NotFoundException();
+
+            await _purchaseRepository.Update(purchase);
+            await _unitOfWork.Commit();
+        }
+
+        public async Task Remove(long id)
+        {
+            var purchase = await _purchaseRepository.GetById(id);
+
+            if (purchase == null)
+                throw new NotFoundException();
+
+            if (purchase.Offers.Any())
+                throw new ConflictException();
+
+            await _purchaseRepository.Remove(purchase);
+            await _unitOfWork.Commit();
+        }
+
+        public async Task<PurchaseEntity> GetById(long id) =>
+            await _purchaseRepository.GetById(id);
+
+        public async Task<IEnumerable<PurchaseEntity>> GetAll() =>
+            await _purchaseRepository.GetAll();
+    }
+}

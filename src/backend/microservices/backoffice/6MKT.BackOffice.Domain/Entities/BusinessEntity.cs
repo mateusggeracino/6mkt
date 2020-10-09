@@ -1,4 +1,5 @@
-﻿using _6MKT.BackOffice.Domain.Entities.Base;
+﻿using System.Collections.Generic;
+using _6MKT.BackOffice.Domain.Entities.Base;
 
 namespace _6MKT.BackOffice.Domain.Entities
 {
@@ -6,5 +7,7 @@ namespace _6MKT.BackOffice.Domain.Entities
     {
         public string RegisteredNumber { get; set; }
         public string TradeName { get; set; }
+
+        public IEnumerable<OfferEntity> Offers { get; set; }
     }
 }

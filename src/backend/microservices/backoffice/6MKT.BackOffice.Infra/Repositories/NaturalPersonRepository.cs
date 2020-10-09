@@ -9,7 +9,7 @@ namespace _6MKT.BackOffice.Infra.Repositories
 {
     public class NaturalPersonRepository : RepositoryBase<NaturalPersonEntity>, INaturalPersonRepository
     {
-        public NaturalPersonRepository(AppContext context) : base(context)
+        public NaturalPersonRepository(MktContext context) : base(context)
         {
         }
 
