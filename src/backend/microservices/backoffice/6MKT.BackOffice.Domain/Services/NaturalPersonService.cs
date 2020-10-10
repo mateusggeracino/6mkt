@@ -5,6 +5,7 @@ using _6MKT.BackOffice.Domain.Services.Interfaces;
 using _6MKT.BackOffice.Domain.UnitOfWork;
 using System.Threading.Tasks;
 using _6MKT.BackOffice.Domain.Exceptions;
+using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
 
 namespace _6MKT.BackOffice.Domain.Services
 {
@@ -55,7 +56,7 @@ namespace _6MKT.BackOffice.Domain.Services
         public async Task<NaturalPersonEntity> GetById(long naturalPersonId) =>
             await _naturalPersonRepository.GetById(naturalPersonId);
 
-        public async Task<IEnumerable<NaturalPersonEntity>> GetAll() =>
-            await _naturalPersonRepository.GetAll();
+        public async Task<IEnumerable<NaturalPersonEntity>> GetAll(PageRequest page) =>
+            await _naturalPersonRepository.GetAll(page);
     }
 }

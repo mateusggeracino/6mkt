@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using _6MKT.BackOffice.Domain.Entities.Base;
+using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
 
 namespace _6MKT.BackOffice.Domain.Services.Interfaces
 {
@@ -11,6 +12,6 @@ namespace _6MKT.BackOffice.Domain.Services.Interfaces
         Task Update(T obj);
         Task Remove(long objId);
         Task<T> GetById(long objId);
-        Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetAll(PageRequest page);
     }
 }

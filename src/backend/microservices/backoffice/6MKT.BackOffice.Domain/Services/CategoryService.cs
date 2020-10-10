@@ -6,6 +6,7 @@ using _6MKT.BackOffice.Domain.UnitOfWork;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
 
 namespace _6MKT.BackOffice.Domain.Services
 {
@@ -56,7 +57,7 @@ namespace _6MKT.BackOffice.Domain.Services
         public async Task<CategoryEntity> GetById(long id) =>
             await _categoryRepository.GetById(id);
 
-        public async Task<IEnumerable<CategoryEntity>> GetAll() =>
-            await _categoryRepository.GetAll();
+        public async Task<IEnumerable<CategoryEntity>> GetAll(PageRequest page) =>
+            await _categoryRepository.GetAll(page);
     }
 }

@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
 
 namespace _6MKT.BackOffice.Api.Controllers
 {
@@ -55,9 +56,9 @@ namespace _6MKT.BackOffice.Api.Controllers
         }
 
         [HttpGet("get-all")]
-        public async Task<ActionResult<IEnumerable<CategoryResponse>>> GetAll()
+        public async Task<ActionResult<IEnumerable<CategoryResponse>>> GetAll(PageRequest page)
         {
-            var categories = await _categoryService.GetAll();
+            var categories = await _categoryService.GetAll(page);
             return Ok(_mapper.Map<IEnumerable<CategoryResponse>>(categories));
         }
     }

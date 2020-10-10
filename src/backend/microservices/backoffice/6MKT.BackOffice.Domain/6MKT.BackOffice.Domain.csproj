@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Labels\LabelsBR.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

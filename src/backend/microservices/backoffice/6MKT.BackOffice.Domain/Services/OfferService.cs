@@ -8,6 +8,7 @@ using _6MKT.BackOffice.Domain.Exceptions;
 using _6MKT.BackOffice.Domain.Repositories.Interfaces;
 using _6MKT.BackOffice.Domain.Services.Interfaces;
 using _6MKT.BackOffice.Domain.UnitOfWork;
+using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
 
 namespace _6MKT.BackOffice.Domain.Services
 {
@@ -67,7 +68,7 @@ namespace _6MKT.BackOffice.Domain.Services
         public async Task<OfferEntity> GetById(long offerId) =>
             await _offerRepository.GetById(offerId);
 
-        public async Task<IEnumerable<OfferEntity>> GetAll() =>
-            await _offerRepository.GetAll();
+        public async Task<IEnumerable<OfferEntity>> GetAll(PageRequest page) =>
+            await _offerRepository.GetAll(page);
     }
 }

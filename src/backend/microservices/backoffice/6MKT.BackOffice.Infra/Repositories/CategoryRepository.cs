@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using _6MKT.BackOffice.Domain.Entities;
 using _6MKT.BackOffice.Domain.Repositories.Interfaces;
+using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
 using _6MKT.BackOffice.Infra.Context;
 using _6MKT.BackOffice.Infra.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace _6MKT.BackOffice.Infra.Repositories
 {
@@ -20,7 +24,8 @@ namespace _6MKT.BackOffice.Infra.Repositories
         public override async Task<CategoryEntity> GetById(long id) =>
             await NoTracking().Include(x => x.SubCategories).FirstOrDefaultAsync(x => x.Id == id);
 
-        public override async Task<IEnumerable<CategoryEntity>> GetAll() =>
-            await NoTracking().Include(x => x.SubCategories).ToListAsync();
+        public override async Task<IEnumerable<CategoryEntity>> GetAll(PageRequest page, 
+            Func<IQueryable<CategoryEntity>, IIncludableQueryable<CategoryEntity, object>> include = null) =>
+            await base.GetAll(page, source => source.Include(x => x.SubCategories));
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using _6MKT.BackOffice.Domain.Entities;
 using _6MKT.BackOffice.Api.Models.Requests.SubCategories;
+using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
 
 namespace _6MKT.BackOffice.Api.Controllers
 {
@@ -53,10 +54,10 @@ namespace _6MKT.BackOffice.Api.Controllers
             return Ok(_mapper.Map<SubCategoryResponse>(subCategory));
         }
 
-        [HttpGet("get-all")]
-        public async Task<ActionResult<IEnumerable<SubCategoryResponse>>> GetAll()
+        [HttpPost("get-all")]
+        public async Task<ActionResult<IEnumerable<SubCategoryResponse>>> GetAll([FromBody] PageRequest page)
         {
-            var subCategories = await _subCategoryService.GetAll();
+            var subCategories = await _subCategoryService.GetAll(page);
             return Ok(_mapper.Map<IEnumerable<SubCategoryResponse>>(subCategories));
         }
     }

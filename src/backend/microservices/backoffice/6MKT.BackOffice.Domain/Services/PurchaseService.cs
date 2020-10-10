@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using _6MKT.BackOffice.Domain.Exceptions;
+using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
 
 namespace _6MKT.BackOffice.Domain.Services
 {
@@ -59,7 +60,7 @@ namespace _6MKT.BackOffice.Domain.Services
         public async Task<PurchaseEntity> GetById(long id) =>
             await _purchaseRepository.GetById(id);
 
-        public async Task<IEnumerable<PurchaseEntity>> GetAll() =>
-            await _purchaseRepository.GetAll();
+        public async Task<IEnumerable<PurchaseEntity>> GetAll(PageRequest page) =>
+            await _purchaseRepository.GetAll(page);
     }
 }

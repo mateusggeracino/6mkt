@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
 
 namespace _6MKT.BackOffice.Api.Controllers
 {
@@ -53,10 +54,10 @@ namespace _6MKT.BackOffice.Api.Controllers
             return Ok(_mapper.Map<NaturalPersonResponse>(naturalPerson));
         }
 
-        [HttpGet("get-all")]
-        public async Task<ActionResult<IEnumerable<NaturalPersonResponse>>> GetAll()
+        [HttpPost("get-all")]
+        public async Task<ActionResult<IEnumerable<NaturalPersonResponse>>> GetAll([FromBody] PageRequest page)
         {
-            var naturalPeople = await _naturalPersonService.GetAll();
+            var naturalPeople = await _naturalPersonService.GetAll(page);
             return Ok(_mapper.Map<IEnumerable<NaturalPersonResponse>>(naturalPeople));
         }
     }

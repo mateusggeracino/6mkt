@@ -1,10 +1,13 @@
-﻿using _6MKT.BackOffice.Domain.Entities.Base;
+﻿using System;
+using _6MKT.BackOffice.Domain.Entities.Base;
 using _6MKT.BackOffice.Domain.Repositories.Interfaces;
 using _6MKT.BackOffice.Infra.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace _6MKT.BackOffice.Infra.Repositories.Base
 {
@@ -29,9 +32,19 @@ namespace _6MKT.BackOffice.Infra.Repositories.Base
         public virtual async Task<T> GetById(long id) =>
             await DbSet.FindAsync(id);
 
-        public virtual async Task<IEnumerable<T>> GetAll()
+        public virtual async Task<IEnumerable<T>> GetAll(PageRequest page,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
         {
-            return await DbSet.ToListAsync();
+            var query = NoTracking().AsQueryable();
+
+            if (include != null)
+                query = include(query);
+
+            var skip = page.PageIndex * page.PageSize;
+
+            query = query.Skip(skip).Take(page.PageSize);
+
+            return await query.ToListAsync();
         }
 
         public virtual async Task Remove(T obj)
