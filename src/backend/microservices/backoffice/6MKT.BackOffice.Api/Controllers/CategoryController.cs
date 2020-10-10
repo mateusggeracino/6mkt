@@ -55,7 +55,7 @@ namespace _6MKT.BackOffice.Api.Controllers
             return Ok(_mapper.Map<CategoryResponse>(category));
         }
 
-        [HttpGet("get-all")]
+        [HttpPost("get-all")]
         public async Task<ActionResult<IEnumerable<CategoryResponse>>> GetAll(PageRequest page)
         {
             var categories = await _categoryService.GetAll(page);
