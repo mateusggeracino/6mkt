@@ -1,15 +1,14 @@
-using _6MKT.BackOffice.Api.Extensions;
-using _6MKT.BackOffice.Api.Jobs;
-using _6MKT.BackOffice.Domain.ValueObjects.AppSettings;
-using _6MKT.Common.Identity;
+using _6MKT.Identity.Api.Extensions;
+using _6MKT.Identity.Domain.ValueObjects.AppSettings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.IO;
+using _6MKT.Common.Identity;
 
-namespace _6MKT.BackOffice.Api
+namespace _6MKT.Identity.Api
 {
     public class Startup
     {
@@ -17,7 +16,7 @@ namespace _6MKT.BackOffice.Api
 
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration; 
+            Configuration = configuration;
             _appSettings = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -28,18 +27,14 @@ namespace _6MKT.BackOffice.Api
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHostedService<MigrationJob>();
             services.AddControllers();
-
-            services.ConfigureDependencyInjection(_appSettings);
             services.SwaggerServices();
+            services.ConfigureDependencyInjection(_appSettings);
             services.AddAuthenticationJwt(Configuration);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

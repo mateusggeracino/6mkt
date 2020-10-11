@@ -1,4 +1,4 @@
-﻿namespace _6MKT.BackOffice.Domain.ValueObjects.AppSettings
+﻿namespace _6MKT.Identity.Domain.ValueObjects.AppSettings
 {
     public interface IAppSettings
     {
