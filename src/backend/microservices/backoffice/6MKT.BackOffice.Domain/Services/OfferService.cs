@@ -25,9 +25,9 @@ namespace _6MKT.BackOffice.Domain.Services
             _purchaseService = purchaseService;
         }
 
-        public async Task Add(OfferEntity offer)
+        public async Task AddAsync(OfferEntity offer)
         {
-            var purchase = await _purchaseService.GetById(offer.PurchaseId);
+            var purchase = await _purchaseService.GetByIdAsync(offer.PurchaseId);
 
             if (purchase == null)
                 throw new NotFoundException();
@@ -39,7 +39,7 @@ namespace _6MKT.BackOffice.Domain.Services
             await _unitOfWork.Commit();
         }
 
-        public async Task Update(OfferEntity offer)
+        public async Task UpdateAsync(OfferEntity offer)
         {
             var offerRegistered = await _offerRepository.GetById(offer.Id);
 
@@ -54,7 +54,7 @@ namespace _6MKT.BackOffice.Domain.Services
             await _unitOfWork.Commit();
         }
 
-        public async Task Remove(long offerId)
+        public async Task RemoveAsync(long offerId)
         {
             var offer = await _offerRepository.GetById(offerId);
 
@@ -65,10 +65,10 @@ namespace _6MKT.BackOffice.Domain.Services
             await _unitOfWork.Commit();
         }
 
-        public async Task<OfferEntity> GetById(long offerId) =>
+        public async Task<OfferEntity> GetByIdAsync(long offerId) =>
             await _offerRepository.GetById(offerId);
 
-        public async Task<IEnumerable<OfferEntity>> GetAll(PageRequest page) =>
+        public async Task<PageResponse<OfferEntity>> GetAllAsync(PageRequest page) =>
             await _offerRepository.GetAll(page);
     }
 }

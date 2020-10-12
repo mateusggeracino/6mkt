@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using _6MKT.BackOffice.Domain.Entities.Base;
 using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
@@ -16,7 +17,9 @@ namespace _6MKT.BackOffice.Domain.Repositories.Interfaces
         Task<T> GetById(long id);
         Task Remove(T obj);
         IQueryable<T> NoTracking();
-        Task<IEnumerable<T>> GetAll(PageRequest page,
+        Task<PageResponse<T>> GetAll(PageRequest page,
             Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null);
+
+        Task<IEnumerable<T>> GetByExpression(Expression<Func<T, bool>> predicate);
     }
 }

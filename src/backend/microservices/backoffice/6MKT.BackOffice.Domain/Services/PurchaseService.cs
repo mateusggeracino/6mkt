@@ -21,7 +21,7 @@ namespace _6MKT.BackOffice.Domain.Services
             _purchaseRepository = purchaseRepository;
         }
 
-        public async Task Add(PurchaseEntity purchaseEntity)
+        public async Task AddAsync(PurchaseEntity purchaseEntity)
         {
             var purchaseRegistered = await _purchaseRepository.GetByPurchase(purchaseEntity);
 
@@ -32,7 +32,7 @@ namespace _6MKT.BackOffice.Domain.Services
             await _unitOfWork.Commit();
         }
 
-        public async Task Update(PurchaseEntity purchase)
+        public async Task UpdateAsync(PurchaseEntity purchase)
         {
             var purchaseRegistered = await _purchaseRepository.GetById(purchase.Id);
 
@@ -43,7 +43,7 @@ namespace _6MKT.BackOffice.Domain.Services
             await _unitOfWork.Commit();
         }
 
-        public async Task Remove(long id)
+        public async Task RemoveAsync(long id)
         {
             var purchase = await _purchaseRepository.GetById(id);
 
@@ -57,10 +57,10 @@ namespace _6MKT.BackOffice.Domain.Services
             await _unitOfWork.Commit();
         }
 
-        public async Task<PurchaseEntity> GetById(long id) =>
+        public async Task<PurchaseEntity> GetByIdAsync(long id) =>
             await _purchaseRepository.GetById(id);
 
-        public async Task<IEnumerable<PurchaseEntity>> GetAll(PageRequest page) =>
+        public async Task<PageResponse<PurchaseEntity>> GetAllAsync(PageRequest page) =>
             await _purchaseRepository.GetAll(page);
     }
 }

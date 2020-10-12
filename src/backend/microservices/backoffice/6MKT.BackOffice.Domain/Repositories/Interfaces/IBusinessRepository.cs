@@ -6,5 +6,6 @@ namespace _6MKT.BackOffice.Domain.Repositories.Interfaces
     public interface IBusinessRepository : IRepositoryBase<BusinessEntity>
     {
         Task<BusinessEntity> GetByRegisteredNumber(string businessEntityRegisteredNumber);
+        Task<bool> GetByEmail(string email);
     }
 }

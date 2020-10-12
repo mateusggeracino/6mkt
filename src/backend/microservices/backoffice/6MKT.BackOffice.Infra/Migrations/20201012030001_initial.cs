@@ -17,8 +17,12 @@ namespace _6MKT.BackOffice.Infra.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedId = table.Column<long>(nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(nullable: true),
+                    ModifiedId = table.Column<long>(nullable: true),
                     ModifiedAt = table.Column<DateTimeOffset>(nullable: true),
+                    IdentityId = table.Column<Guid>(nullable: false),
+                    Email = table.Column<string>(nullable: true),
                     RegisteredNumber = table.Column<string>(maxLength: 20, nullable: true),
                     TradeName = table.Column<string>(maxLength: 80, nullable: true)
                 },
@@ -34,7 +38,9 @@ namespace _6MKT.BackOffice.Infra.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedId = table.Column<long>(nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(nullable: true),
+                    ModifiedId = table.Column<long>(nullable: true),
                     ModifiedAt = table.Column<DateTimeOffset>(nullable: true),
                     Description = table.Column<string>(maxLength: 500, nullable: true)
                 },
@@ -50,8 +56,12 @@ namespace _6MKT.BackOffice.Infra.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedId = table.Column<long>(nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(nullable: true),
+                    ModifiedId = table.Column<long>(nullable: true),
                     ModifiedAt = table.Column<DateTimeOffset>(nullable: true),
+                    IdentityId = table.Column<Guid>(nullable: false),
+                    Email = table.Column<string>(nullable: true),
                     SocialNumber = table.Column<string>(maxLength: 14, nullable: true),
                     Name = table.Column<string>(maxLength: 100, nullable: true),
                     LastName = table.Column<string>(maxLength: 80, nullable: true)
@@ -68,7 +78,9 @@ namespace _6MKT.BackOffice.Infra.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedId = table.Column<long>(nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(nullable: true),
+                    ModifiedId = table.Column<long>(nullable: true),
                     ModifiedAt = table.Column<DateTimeOffset>(nullable: true),
                     Description = table.Column<string>(maxLength: 500, nullable: true),
                     CategoryId = table.Column<long>(nullable: false)
@@ -92,24 +104,27 @@ namespace _6MKT.BackOffice.Infra.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedId = table.Column<long>(nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(nullable: true),
+                    ModifiedId = table.Column<long>(nullable: true),
                     ModifiedAt = table.Column<DateTimeOffset>(nullable: true),
                     Title = table.Column<string>(maxLength: 150, nullable: true),
                     AveragePrice = table.Column<double>(nullable: false),
                     Description = table.Column<string>(maxLength: 500, nullable: true),
+                    Status = table.Column<int>(nullable: false),
                     SubCategoryId = table.Column<long>(nullable: false),
-                    NaturalPersonId = table.Column<long>(nullable: false)
+                    NaturalPersonEntityId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Purchase", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Purchase_NaturalPerson_NaturalPersonId",
-                        column: x => x.NaturalPersonId,
+                        name: "FK_Purchase_NaturalPerson_NaturalPersonEntityId",
+                        column: x => x.NaturalPersonEntityId,
                         principalSchema: "backoffice",
                         principalTable: "NaturalPerson",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Purchase_SubCategory_SubCategoryId",
                         column: x => x.SubCategoryId,
@@ -126,7 +141,9 @@ namespace _6MKT.BackOffice.Infra.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedId = table.Column<long>(nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(nullable: true),
+                    ModifiedId = table.Column<long>(nullable: true),
                     ModifiedAt = table.Column<DateTimeOffset>(nullable: true),
                     Description = table.Column<string>(maxLength: 500, nullable: true),
                     InStock = table.Column<bool>(nullable: false),
@@ -155,38 +172,38 @@ namespace _6MKT.BackOffice.Infra.Migrations
             migrationBuilder.InsertData(
                 schema: "backoffice",
                 table: "Category",
-                columns: new[] { "Id", "CreatedAt", "Description", "ModifiedAt" },
-                values: new object[] { 1L, null, "Casa, Móveis e Decoração", null });
+                columns: new[] { "Id", "CreatedAt", "CreatedId", "Description", "ModifiedAt", "ModifiedId" },
+                values: new object[] { 1L, null, null, "Casa, Móveis e Decoração", null, null });
 
             migrationBuilder.InsertData(
                 schema: "backoffice",
                 table: "Category",
-                columns: new[] { "Id", "CreatedAt", "Description", "ModifiedAt" },
-                values: new object[] { 2L, null, "Celulares e Telefones", null });
+                columns: new[] { "Id", "CreatedAt", "CreatedId", "Description", "ModifiedAt", "ModifiedId" },
+                values: new object[] { 2L, null, null, "Celulares e Telefones", null, null });
 
             migrationBuilder.InsertData(
                 schema: "backoffice",
                 table: "Category",
-                columns: new[] { "Id", "CreatedAt", "Description", "ModifiedAt" },
-                values: new object[] { 3L, null, "Games", null });
+                columns: new[] { "Id", "CreatedAt", "CreatedId", "Description", "ModifiedAt", "ModifiedId" },
+                values: new object[] { 3L, null, null, "Games", null, null });
 
             migrationBuilder.InsertData(
                 schema: "backoffice",
                 table: "SubCategory",
-                columns: new[] { "Id", "CategoryId", "CreatedAt", "Description", "ModifiedAt" },
+                columns: new[] { "Id", "CategoryId", "CreatedAt", "CreatedId", "Description", "ModifiedAt", "ModifiedId" },
                 values: new object[,]
                 {
-                    { 1L, 1L, null, "Banheiros", null },
-                    { 2L, 1L, null, "Colchões e Camas Box", null },
-                    { 3L, 1L, null, "Cortinas e Acessórios", null },
-                    { 4L, 1L, null, "Móveis para Casa", null },
-                    { 5L, 2L, null, "Acessórios para Celulares", null },
-                    { 6L, 2L, null, "Celulares e Smartphones", null },
-                    { 7L, 2L, null, "Tarifadores e Cabines", null },
-                    { 8L, 3L, null, "Consoles", null },
-                    { 9L, 3L, null, "Peças para Consoles", null },
-                    { 10L, 3L, null, "Acessórios para PC Gaming", null },
-                    { 11L, 3L, null, "Video Games", null }
+                    { 1L, 1L, null, null, "Banheiros", null, null },
+                    { 2L, 1L, null, null, "Colchões e Camas Box", null, null },
+                    { 3L, 1L, null, null, "Cortinas e Acessórios", null, null },
+                    { 4L, 1L, null, null, "Móveis para Casa", null, null },
+                    { 5L, 2L, null, null, "Acessórios para Celulares", null, null },
+                    { 6L, 2L, null, null, "Celulares e Smartphones", null, null },
+                    { 7L, 2L, null, null, "Tarifadores e Cabines", null, null },
+                    { 8L, 3L, null, null, "Consoles", null, null },
+                    { 9L, 3L, null, null, "Peças para Consoles", null, null },
+                    { 10L, 3L, null, null, "Acessórios para PC Gaming", null, null },
+                    { 11L, 3L, null, null, "Video Games", null, null }
                 });
 
             migrationBuilder.CreateIndex(
@@ -202,10 +219,10 @@ namespace _6MKT.BackOffice.Infra.Migrations
                 column: "PurchaseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Purchase_NaturalPersonId",
+                name: "IX_Purchase_NaturalPersonEntityId",
                 schema: "backoffice",
                 table: "Purchase",
-                column: "NaturalPersonId");
+                column: "NaturalPersonEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Purchase_SubCategoryId",

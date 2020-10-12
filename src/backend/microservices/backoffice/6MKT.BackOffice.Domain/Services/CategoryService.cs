@@ -21,7 +21,7 @@ namespace _6MKT.BackOffice.Domain.Services
             _categoryRepository = categoryRepository;
         }
 
-        public async Task Add(CategoryEntity category)
+        public async Task AddAsync(CategoryEntity category)
         {
             var categoryRegisted = await _categoryRepository.GetByDescription(category.Description);
 
@@ -32,7 +32,7 @@ namespace _6MKT.BackOffice.Domain.Services
             await _unitOfWork.Commit();
         }
 
-        public async Task Update(CategoryEntity category)
+        public async Task UpdateAsync(CategoryEntity category)
         {
             var categoryRegisted = await _categoryRepository.GetById(category.Id);
 
@@ -43,7 +43,7 @@ namespace _6MKT.BackOffice.Domain.Services
             await _unitOfWork.Commit();
         }
 
-        public async Task Remove(long id)
+        public async Task RemoveAsync(long id)
         {
             var category = await _categoryRepository.GetById(id);
 
@@ -54,10 +54,10 @@ namespace _6MKT.BackOffice.Domain.Services
             await _unitOfWork.Commit();
         }
 
-        public async Task<CategoryEntity> GetById(long id) =>
+        public async Task<CategoryEntity> GetByIdAsync(long id) =>
             await _categoryRepository.GetById(id);
 
-        public async Task<IEnumerable<CategoryEntity>> GetAll(PageRequest page) =>
+        public async Task<PageResponse<CategoryEntity>> GetAllAsync(PageRequest page) =>
             await _categoryRepository.GetAll(page);
     }
 }

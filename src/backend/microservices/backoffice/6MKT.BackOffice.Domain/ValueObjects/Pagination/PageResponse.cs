@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace _6MKT.BackOffice.Domain.ValueObjects.Pagination
 {

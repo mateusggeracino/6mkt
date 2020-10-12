@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace _6MKT.BackOffice.Domain.Clock
+namespace _6MKT.Common.Clock
 {
     public interface IClock
     {

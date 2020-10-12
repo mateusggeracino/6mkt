@@ -5,6 +5,7 @@ using _6MKT.BackOffice.Api.Models.Responses.Offers;
 using _6MKT.BackOffice.Api.Models.Responses.Purchases;
 using _6MKT.BackOffice.Api.Models.Responses.SubCategories;
 using _6MKT.BackOffice.Domain.Entities;
+using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
 using AutoMapper;
 
 namespace _6MKT.BackOffice.Api.AutoMapper.Profiles
@@ -19,6 +20,8 @@ namespace _6MKT.BackOffice.Api.AutoMapper.Profiles
             CreateMap<SubCategoryEntity, SubCategoryResponse>();
             CreateMap<OfferEntity, OfferResponse>();
             CreateMap<PurchaseEntity, PurchaseResponse>();
+
+            CreateMap(typeof(PageResponse<>), typeof(PageResponse<>));
         }
     }
 }

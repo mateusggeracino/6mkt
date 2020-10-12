@@ -1,19 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using _6MKT.BackOffice.Api.AutoMapper;
 using _6MKT.BackOffice.Api.Extensions;
 using _6MKT.BackOffice.Api.Jobs;
 using _6MKT.BackOffice.Domain.ValueObjects.AppSettings;
+using _6MKT.Common.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace _6MKT.BackOffice.Api
 {
@@ -34,7 +28,6 @@ namespace _6MKT.BackOffice.Api
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHostedService<MigrationJob>();
@@ -42,9 +35,10 @@ namespace _6MKT.BackOffice.Api
 
             services.ConfigureDependencyInjection(_appSettings);
             services.SwaggerServices();
+            services.AddAuthenticationJwt(Configuration);
+            services.AddRefit();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -55,7 +49,7 @@ namespace _6MKT.BackOffice.Api
             app.SwaggerApp();
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.AddIdentityConfiguration();
 
             app.UseEndpoints(endpoints =>
             {

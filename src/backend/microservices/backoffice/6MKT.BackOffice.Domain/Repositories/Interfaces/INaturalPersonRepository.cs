@@ -6,5 +6,6 @@ namespace _6MKT.BackOffice.Domain.Repositories.Interfaces
     public interface INaturalPersonRepository : IRepositoryBase<NaturalPersonEntity>
     {
         Task<NaturalPersonEntity> GetBySocialNumber(string socialNumber);
+        Task<bool> GetByEmail(string email);
     }
 }

@@ -6,11 +6,13 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using _6MKT.BackOffice.Api.Attributes;
+using _6MKT.BackOffice.Domain.Constants;
 using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
 
 namespace _6MKT.BackOffice.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/category")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -25,41 +27,44 @@ namespace _6MKT.BackOffice.Api.Controllers
 
 
         [HttpPost]
+        [AuthorizeProfile(UserTypesConstants.Admin)]
         public async Task<IActionResult> Add([FromBody] CategoryAddRequest category)
         {
             var businessEntity = _mapper.Map<CategoryEntity>(category);
-            await _categoryService.Add(businessEntity);
+            await _categoryService.AddAsync(businessEntity);
             return Ok();
         }
 
         [HttpPut]
+        [AuthorizeProfile(UserTypesConstants.Admin)]
         public async Task<IActionResult> Update([FromBody] CategoryUpdateRequest category)
         {
             var categoryEntity = _mapper.Map<CategoryEntity>(category);
-            await _categoryService.Update(categoryEntity);
+            await _categoryService.UpdateAsync(categoryEntity);
             return Ok();
         }
 
         [HttpDelete("{categoryId:long}")]
+        [AuthorizeProfile(UserTypesConstants.Admin)]
         public async Task<IActionResult> Remove([FromRoute] long categoryId)
         {
-            await _categoryService.Remove(categoryId);
+            await _categoryService.RemoveAsync(categoryId);
             return Ok();
         }
 
         [HttpGet("{categoryId:long}")]
         public async Task<ActionResult<CategoryResponse>> GetById([FromRoute] long categoryId)
         {
-            var category = await _categoryService.GetById(categoryId);
+            var category = await _categoryService.GetByIdAsync(categoryId);
 
             return Ok(_mapper.Map<CategoryResponse>(category));
         }
 
         [HttpPost("get-all")]
-        public async Task<ActionResult<IEnumerable<CategoryResponse>>> GetAll(PageRequest page)
+        public async Task<ActionResult<PageResponse<CategoryResponse>>> GetAll(PageRequest page)
         {
-            var categories = await _categoryService.GetAll(page);
-            return Ok(_mapper.Map<IEnumerable<CategoryResponse>>(categories));
+            var categories = await _categoryService.GetAllAsync(page);
+            return Ok(_mapper.Map<PageResponse<CategoryResponse>>(categories));
         }
     }
 }

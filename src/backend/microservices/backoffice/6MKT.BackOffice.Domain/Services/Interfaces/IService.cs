@@ -8,10 +8,10 @@ namespace _6MKT.BackOffice.Domain.Services.Interfaces
 {
     public interface IService<T> where T : Entity
     {
-        Task Add(T obj);
-        Task Update(T obj);
-        Task Remove(long objId);
-        Task<T> GetById(long objId);
-        Task<IEnumerable<T>> GetAll(PageRequest page);
+        Task AddAsync(T obj);
+        Task UpdateAsync(T obj);
+        Task RemoveAsync(long objId);
+        Task<T> GetByIdAsync(long objId);
+        Task<PageResponse<T>> GetAllAsync(PageRequest page);
     }
 }
