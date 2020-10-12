@@ -11,7 +11,7 @@ COPY ["./backend/microservices/backoffice/6MKT.BackOffice.Infra/6MKT.BackOffice.
 COPY ["./backend/microservices/backoffice/6MKT.BackOffice.Domain/6MKT.BackOffice.Domain.csproj", "microservices/backoffice/6MKT.BackOffice.Domain/"]
 RUN dotnet restore "microservices/backoffice/6MKT.BackOffice.Api/6MKT.BackOffice.Api.csproj"
 COPY . .
-WORKDIR "/src/backend/microservices/backoffice/6MKT.BackOffice.Api"
+WORKDIR "./src/backend/microservices/backoffice/6MKT.BackOffice.Api"
 RUN dotnet build "6MKT.BackOffice.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish

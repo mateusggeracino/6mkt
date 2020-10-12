@@ -22,7 +22,7 @@ namespace _6MKT.BackOffice.Domain.Services
             _categoryRepository = categoryRepository;
         }
 
-        public async Task Add(SubCategoryEntity subCategory)
+        public async Task AddAsync(SubCategoryEntity subCategory)
         {
             var subCategoryRegistered = await _subCategoryRepository.GetByDescription(subCategory.Description);
 
@@ -38,7 +38,7 @@ namespace _6MKT.BackOffice.Domain.Services
             await _unitOfWork.Commit();
         }
 
-        public async Task Update(SubCategoryEntity subCategory)
+        public async Task UpdateAsync(SubCategoryEntity subCategory)
         {
             var subCategoryRegistered = await _subCategoryRepository.GetById(subCategory.Id);
 
@@ -57,7 +57,7 @@ namespace _6MKT.BackOffice.Domain.Services
             await _unitOfWork.Commit();
         }
 
-        public async Task Remove(long id)
+        public async Task RemoveAsync(long id)
         {
             var subCategoryRegistered = await _subCategoryRepository.GetById(id);
 
@@ -68,10 +68,10 @@ namespace _6MKT.BackOffice.Domain.Services
             await _unitOfWork.Commit();
         }
 
-        public async Task<SubCategoryEntity> GetById(long id) =>
+        public async Task<SubCategoryEntity> GetByIdAsync(long id) =>
             await _subCategoryRepository.GetById(id);
 
-        public async Task<IEnumerable<SubCategoryEntity>> GetAll(PageRequest page) =>
+        public async Task<PageResponse<SubCategoryEntity>> GetAllAsync(PageRequest page) =>
             await _subCategoryRepository.GetAll(page);
     }
 }

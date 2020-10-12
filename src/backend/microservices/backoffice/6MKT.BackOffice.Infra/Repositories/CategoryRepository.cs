@@ -24,7 +24,7 @@ namespace _6MKT.BackOffice.Infra.Repositories
         public override async Task<CategoryEntity> GetById(long id) =>
             await NoTracking().Include(x => x.SubCategories).FirstOrDefaultAsync(x => x.Id == id);
 
-        public override async Task<IEnumerable<CategoryEntity>> GetAll(PageRequest page, 
+        public override async Task<PageResponse<CategoryEntity>> GetAll(PageRequest page, 
             Func<IQueryable<CategoryEntity>, IIncludableQueryable<CategoryEntity, object>> include = null) =>
             await base.GetAll(page, source => source.Include(x => x.SubCategories));
     }

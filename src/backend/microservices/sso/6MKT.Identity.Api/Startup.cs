@@ -33,6 +33,7 @@ namespace _6MKT.Identity.Api
             services.SwaggerServices();
             services.ConfigureDependencyInjection(_appSettings);
             services.AddAuthenticationJwt(Configuration);
+            services.ConfigIdentity();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

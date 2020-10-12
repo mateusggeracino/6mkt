@@ -25,16 +25,14 @@ namespace _6MKT.Identity.Api.Controllers
         public async Task<IActionResult> Add([FromBody] UserAddRequest user)
         {
             var userEntity = _mapper.Map<UserEntity>(user);
-            var result = await _userService.AddAsync(userEntity);
-            return Ok();
+            var id = await _userService.AddAsync(userEntity);
+            return Ok(id);
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginRequest login)
         {
-            var userEntity = _mapper.Map<UserEntity>(login);
-            var result = await _userService.LoginAsync(userEntity);
-            return Ok(result);
+            return Ok(await _userService.LoginAsync(login.Email,login.Password));
         }
     }
 }

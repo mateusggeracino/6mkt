@@ -4,6 +4,5 @@ namespace _6MKT.BackOffice.Domain.Services.Interfaces
 {
     public interface ICategoryService : IService<CategoryEntity>
     {
-        
     }
 }

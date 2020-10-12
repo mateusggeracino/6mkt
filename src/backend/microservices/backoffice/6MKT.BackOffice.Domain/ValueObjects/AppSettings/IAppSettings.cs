@@ -4,5 +4,6 @@
     {
         ConnectionStrings ConnectionStrings { get; set; }
         JwtSettings Jwt { get; set; }
+        EnpointsSettings Endpoints { get; set; }
     }
 }

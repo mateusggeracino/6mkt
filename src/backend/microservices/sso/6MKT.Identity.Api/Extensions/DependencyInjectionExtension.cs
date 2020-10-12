@@ -17,13 +17,7 @@ namespace _6MKT.Identity.Api.Extensions
             services.AddDbContext<IdentityContext>(x =>
                 x.UseSqlServer(appSettings.ConnectionStrings.Connection,
                     y => y.MigrationsHistoryTable("MigrationHistory", "Identity")));
-
-            services
-                .AddDefaultIdentity<UserEntity>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<IdentityContext>()
-                .AddDefaultTokenProviders();
-
+            
             services.AddSingleton(MapperConfig.Config().CreateMapper());
             services.AddSingleton(appSettings);
 

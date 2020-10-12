@@ -32,6 +32,12 @@ namespace _6MKT.BackOffice.Infra.Migrations
                     b.Property<long?>("CreatedId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("IdentityId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTimeOffset?>("ModifiedAt")
                         .HasColumnType("datetimeoffset");
 
@@ -108,6 +114,12 @@ namespace _6MKT.BackOffice.Infra.Migrations
 
                     b.Property<long?>("CreatedId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("IdentityId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(80)")

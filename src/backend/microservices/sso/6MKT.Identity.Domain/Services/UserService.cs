@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+﻿using _6MKT.Identity.Domain.Constants;
 using _6MKT.Identity.Domain.Entities;
 using _6MKT.Identity.Domain.Services.Interfaces;
 using _6MKT.Identity.Domain.ValueObjects.AppSettings;
 using _6MKT.Identity.Domain.ValueObjects.Tokens;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace _6MKT.Identity.Domain.Services
@@ -27,30 +27,39 @@ namespace _6MKT.Identity.Domain.Services
             _appSettings = appSettings;
         }
 
-        public async Task<UserEntity> AddAsync(UserEntity user)
+        public async Task<string> AddAsync(UserEntity user)
         {
+            user.FirstPassword = user.PasswordHash;
+
             var result = await _userManager.CreateAsync(user, user.PasswordHash);
 
-            return result.Succeeded ? user : null;
+            await _userManager.AddClaimAsync(user, new Claim(JwtCustomClaimNames.UserType, user.Type.ToString().ToLower()));
+
+            if (!result.Succeeded)
+                return null;
+            
+            return await _userManager.GetUserIdAsync(user);
         }
 
-        public async Task<Token> LoginAsync(UserEntity user)
+        public async Task<Token> LoginAsync(string email, string password)
         {
-            var result = await _signInManager.PasswordSignInAsync(user.Email, user.PasswordHash, false, true);
-
-            return !result.Succeeded ? null : GenerateJwt(user);
+            var result = await _signInManager.PasswordSignInAsync(email, password, false, true);
+            
+            return !result.Succeeded ? null : GenerateJwt(email);
         }
 
-        private Token GenerateJwt(UserEntity user)
+        private Token GenerateJwt(string email)
         {
+            var user = _userManager.FindByEmailAsync(email).Result;
             var claims = _userManager.GetClaimsAsync(user).Result;
 
+            //claims.Add(new Claim(JwtCustomClaimNames.UserType, user.Type.ToString().ToLower()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
             claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.Now).ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.Now).ToString(), ClaimValueTypes.Integer64));
-
+            
             var identityClaims = new ClaimsIdentity();
             identityClaims.AddClaims(claims);
 

@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using _6MKT.BackOffice.Domain.Clock;
-using _6MKT.BackOffice.Domain.Entities.Base;
+﻿using _6MKT.BackOffice.Domain.Entities.Base;
 using _6MKT.BackOffice.Infra.Configuration;
 using _6MKT.BackOffice.Infra.Seeds;
+using _6MKT.Common.Clock;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace _6MKT.BackOffice.Infra.Context
 {

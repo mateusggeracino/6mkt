@@ -10,7 +10,7 @@ using _6MKT.BackOffice.Infra.Context;
 namespace _6MKT.BackOffice.Infra.Migrations
 {
     [DbContext(typeof(MktContext))]
-    [Migration("20201009013651_initial")]
+    [Migration("20201012030001_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,8 +31,20 @@ namespace _6MKT.BackOffice.Infra.Migrations
                     b.Property<DateTimeOffset?>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<long?>("CreatedId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("IdentityId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTimeOffset?>("ModifiedAt")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("ModifiedId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("RegisteredNumber")
                         .HasColumnType("nvarchar(20)")
@@ -57,12 +69,18 @@ namespace _6MKT.BackOffice.Infra.Migrations
                     b.Property<DateTimeOffset?>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<long?>("CreatedId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
 
                     b.Property<DateTimeOffset?>("ModifiedAt")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("ModifiedId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -96,12 +114,24 @@ namespace _6MKT.BackOffice.Infra.Migrations
                     b.Property<DateTimeOffset?>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<long?>("CreatedId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("IdentityId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(80)")
                         .HasMaxLength(80);
 
                     b.Property<DateTimeOffset?>("ModifiedAt")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("ModifiedId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(100)")
@@ -129,6 +159,9 @@ namespace _6MKT.BackOffice.Infra.Migrations
                     b.Property<DateTimeOffset?>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<long?>("CreatedId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
@@ -138,6 +171,9 @@ namespace _6MKT.BackOffice.Infra.Migrations
 
                     b.Property<DateTimeOffset?>("ModifiedAt")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("ModifiedId")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("PurchaseId")
                         .HasColumnType("bigint");
@@ -164,6 +200,9 @@ namespace _6MKT.BackOffice.Infra.Migrations
                     b.Property<DateTimeOffset?>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<long?>("CreatedId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
@@ -171,8 +210,14 @@ namespace _6MKT.BackOffice.Infra.Migrations
                     b.Property<DateTimeOffset?>("ModifiedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<long>("NaturalPersonId")
+                    b.Property<long?>("ModifiedId")
                         .HasColumnType("bigint");
+
+                    b.Property<long?>("NaturalPersonEntityId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<long>("SubCategoryId")
                         .HasColumnType("bigint");
@@ -183,7 +228,7 @@ namespace _6MKT.BackOffice.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NaturalPersonId");
+                    b.HasIndex("NaturalPersonEntityId");
 
                     b.HasIndex("SubCategoryId");
 
@@ -203,12 +248,18 @@ namespace _6MKT.BackOffice.Infra.Migrations
                     b.Property<DateTimeOffset?>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<long?>("CreatedId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
 
                     b.Property<DateTimeOffset?>("ModifiedAt")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("ModifiedId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -302,11 +353,9 @@ namespace _6MKT.BackOffice.Infra.Migrations
 
             modelBuilder.Entity("_6MKT.BackOffice.Domain.Entities.PurchaseEntity", b =>
                 {
-                    b.HasOne("_6MKT.BackOffice.Domain.Entities.NaturalPersonEntity", "NaturalPerson")
+                    b.HasOne("_6MKT.BackOffice.Domain.Entities.NaturalPersonEntity", null)
                         .WithMany("Purchases")
-                        .HasForeignKey("NaturalPersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("NaturalPersonEntityId");
 
                     b.HasOne("_6MKT.BackOffice.Domain.Entities.SubCategoryEntity", "SubCategory")
                         .WithMany("Purchases")

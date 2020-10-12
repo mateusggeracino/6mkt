@@ -2,7 +2,8 @@
 {
     public enum UserEnum
     {
+        NaturalPerson,
         Business,
-        NaturalPerson
+        Admin
     }
 }

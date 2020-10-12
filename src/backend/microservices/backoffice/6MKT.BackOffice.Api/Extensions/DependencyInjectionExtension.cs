@@ -1,5 +1,4 @@
 ﻿using _6MKT.BackOffice.Api.AutoMapper;
-using _6MKT.BackOffice.Domain.Clock;
 using _6MKT.BackOffice.Domain.Repositories.Interfaces;
 using _6MKT.BackOffice.Domain.Services;
 using _6MKT.BackOffice.Domain.Services.Interfaces;
@@ -8,6 +7,7 @@ using _6MKT.BackOffice.Domain.ValueObjects.AppSettings;
 using _6MKT.BackOffice.Infra.Context;
 using _6MKT.BackOffice.Infra.Repositories;
 using _6MKT.BackOffice.Infra.UnitOfWork;
+using _6MKT.Common.Clock;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +22,7 @@ namespace _6MKT.BackOffice.Api.Extensions
                     y => y.MigrationsHistoryTable("HistoryMigration", "backoffice"))
             );
 
+            services.AddSingleton(appSettings);
             services.AddSingleton(MapperConfig.Config().CreateMapper());
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IClock, Clock>();
