@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.IO;
+using _6MKT.Identity.Api.Jobs;
 
 namespace _6MKT.Identity.Api
 {
@@ -28,6 +29,7 @@ namespace _6MKT.Identity.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHostedService<MigrationJob>();
             services.AddControllers();
             services.SwaggerServices();
             services.ConfigureDependencyInjection(_appSettings);
