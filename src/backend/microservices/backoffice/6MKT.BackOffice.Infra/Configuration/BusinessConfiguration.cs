@@ -12,6 +12,10 @@ namespace _6MKT.BackOffice.Infra.Configuration
 
             builder.Property(x => x.RegisteredNumber).HasMaxLength(20);
             builder.Property(x => x.TradeName).HasMaxLength(80);
+            builder.Property(x => x.Phone).HasMaxLength(30);
+            builder.Property(x => x.Email).HasMaxLength(200);
+
+            builder.HasOne(x => x.Address).WithOne();
 
             builder.ToTable("Business", "backoffice");
         }

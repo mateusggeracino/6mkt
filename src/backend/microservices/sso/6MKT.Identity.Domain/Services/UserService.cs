@@ -10,25 +10,30 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using _6MKT.Common.EmailProviders;
+using _6MKT.Common.EmailProviders.Models;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace _6MKT.Identity.Domain.Services
 {
     public class UserService : IUserService
     {
+        private readonly IEmailProvider _emailProvider;
         private readonly SignInManager<UserEntity> _signInManager;
         private readonly UserManager<UserEntity> _userManager;
         private readonly IAppSettings _appSettings;
 
-        public UserService(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, IAppSettings appSettings)
+        public UserService(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, IAppSettings appSettings, IEmailProvider emailProvider)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appSettings = appSettings;
+            _emailProvider = emailProvider;
         }
 
         public async Task<string> AddAsync(UserEntity user)
         {
+            var password = user.PasswordHash;
             user.FirstPassword = user.PasswordHash;
 
             var result = await _userManager.CreateAsync(user, user.PasswordHash);
@@ -37,6 +42,13 @@ namespace _6MKT.Identity.Domain.Services
 
             if (!result.Succeeded)
                 return null;
+
+            await _emailProvider.SendPasswordAsync(new PasswordEmailModel
+            {
+                ToName = user.Name,
+                ToEmail = user.Email,
+                Password = password
+            });
             
             return await _userManager.GetUserIdAsync(user);
         }
@@ -53,7 +65,6 @@ namespace _6MKT.Identity.Domain.Services
             var user = _userManager.FindByEmailAsync(email).Result;
             var claims = _userManager.GetClaimsAsync(user).Result;
 
-            //claims.Add(new Claim(JwtCustomClaimNames.UserType, user.Type.ToString().ToLower()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
             claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));

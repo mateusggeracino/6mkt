@@ -1,4 +1,6 @@
-﻿using _6MKT.BackOffice.Api.Models.Requests.Business;
+﻿using System.Linq;
+using _6MKT.BackOffice.Api.Models.Requests.Address;
+using _6MKT.BackOffice.Api.Models.Requests.Business;
 using _6MKT.BackOffice.Api.Models.Requests.Categories;
 using _6MKT.BackOffice.Api.Models.Requests.NaturalPeople;
 using _6MKT.BackOffice.Api.Models.Requests.Offers;
@@ -19,8 +21,14 @@ namespace _6MKT.BackOffice.Api.AutoMapper.Profiles
             #endregion
 
             #region Business
-            CreateMap<BusinessAddRequest, BusinessEntity>();
-            CreateMap<BusinessUpdateRequest, BusinessEntity>();
+            CreateMap<BusinessAddRequest, BusinessEntity>()
+                .ForMember(dest => dest.SubCategories, opt => opt
+                    .MapFrom(x => x.Subcategories.Select(s => new BusinessSubCategory { SubCategoryId = s })));
+
+            CreateMap<BusinessUpdateRequest, BusinessEntity>()
+                .ForMember(dest => dest.SubCategories, opt => opt
+                    .MapFrom(x => x.Subcategories.Select(s => new BusinessSubCategory { SubCategoryId = s })));
+
             #endregion
 
             #region Category
@@ -41,6 +49,11 @@ namespace _6MKT.BackOffice.Api.AutoMapper.Profiles
             #region Purchase
             CreateMap<PurchaseAddRequest, PurchaseEntity>();
             CreateMap<PurchaseUpdateRequest, PurchaseEntity>();
+            #endregion
+
+            #region Address
+            CreateMap<AddressAddRequest, AddressEntity>();
+            CreateMap<AddressUpdateRequest, AddressEntity>();
             #endregion
         }
     }

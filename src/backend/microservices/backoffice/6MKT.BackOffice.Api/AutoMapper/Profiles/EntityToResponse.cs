@@ -1,4 +1,6 @@
-﻿using _6MKT.BackOffice.Api.Models.Responses.Business;
+﻿using System.Linq;
+using _6MKT.BackOffice.Api.Models.Responses.Address;
+using _6MKT.BackOffice.Api.Models.Responses.Business;
 using _6MKT.BackOffice.Api.Models.Responses.Categories;
 using _6MKT.BackOffice.Api.Models.Responses.NaturalPeople;
 using _6MKT.BackOffice.Api.Models.Responses.Offers;
@@ -15,11 +17,16 @@ namespace _6MKT.BackOffice.Api.AutoMapper.Profiles
         public EntityToResponse()
         {
             CreateMap<NaturalPersonEntity, NaturalPersonResponse>();
-            CreateMap<BusinessEntity, BusinessResponse>();
+
+            CreateMap<BusinessEntity, BusinessResponse>()
+                .ForMember(x => x.SubCategories, opt => opt
+                    .MapFrom(x => x.SubCategories.Select(s => s.SubCategory)));
+
             CreateMap<CategoryEntity, CategoryResponse>();
             CreateMap<SubCategoryEntity, SubCategoryResponse>();
             CreateMap<OfferEntity, OfferResponse>();
             CreateMap<PurchaseEntity, PurchaseResponse>();
+            CreateMap<AddressEntity, AddressResponse>();
 
             CreateMap(typeof(PageResponse<>), typeof(PageResponse<>));
         }

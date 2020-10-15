@@ -18,11 +18,14 @@ namespace _6MKT.BackOffice.Api.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IPurchaseService _purchaseService;
+        private readonly IPurchaseCompletedService _purchaseCompletedService;
 
-        public PurchaseController(IMapper mapper, IPurchaseService purchaseService)
+        public PurchaseController(IMapper mapper, IPurchaseService purchaseService, 
+            IPurchaseCompletedService purchaseCompletedService)
         {
             _mapper = mapper;
             _purchaseService = purchaseService;
+            _purchaseCompletedService = purchaseCompletedService;
         }
 
         [HttpPost]
@@ -63,6 +66,13 @@ namespace _6MKT.BackOffice.Api.Controllers
         {
             var purchaseEntity = await _purchaseService.GetAllAsync(page);
             return Ok(_mapper.Map<PageResponse<PurchaseResponse>>(purchaseEntity));
+        }
+
+        [HttpPost("{purchaseId:long}/acceptance/{offerId:long}")]
+        public async Task<IActionResult> SelectOffer([FromRoute] long purchaseId, long offerId)
+        {
+            await _purchaseCompletedService.AddAsync(PurchaseCompletedEntity.New(purchaseId, offerId));
+            return Ok();
         }
     }
 }

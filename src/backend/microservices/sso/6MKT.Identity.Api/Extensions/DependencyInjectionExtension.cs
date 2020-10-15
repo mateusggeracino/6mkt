@@ -1,4 +1,5 @@
-﻿using _6MKT.Identity.Api.AutoMapper;
+﻿using _6MKT.Common.EmailProviders;
+using _6MKT.Identity.Api.AutoMapper;
 using _6MKT.Identity.Domain.Entities;
 using _6MKT.Identity.Domain.Services;
 using _6MKT.Identity.Domain.Services.Interfaces;
@@ -20,6 +21,7 @@ namespace _6MKT.Identity.Api.Extensions
             
             services.AddSingleton(MapperConfig.Config().CreateMapper());
             services.AddSingleton(appSettings);
+            services.AddScoped<IEmailProvider, EmailProvider>();
 
             services.AddScoped<IUserService, UserService>();
         }

@@ -13,6 +13,10 @@ namespace _6MKT.BackOffice.Infra.Configuration
             builder.Property(x => x.Name).HasMaxLength(100);
             builder.Property(x => x.LastName).HasMaxLength(80);
             builder.Property(x => x.SocialNumber).HasMaxLength(14);
+            builder.Property(x => x.Phone).HasMaxLength(30);
+            builder.Property(x => x.Email).HasMaxLength(200);
+
+            builder.HasOne(x => x.Address);
 
             builder.ToTable("NaturalPerson","backoffice");
         }

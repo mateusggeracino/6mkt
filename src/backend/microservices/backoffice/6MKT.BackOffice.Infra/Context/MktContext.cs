@@ -6,25 +6,32 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using _6MKT.BackOffice.Domain.ValueObjects.UserIdentifier;
 
 namespace _6MKT.BackOffice.Infra.Context
 {
     public class MktContext : DbContext
     {
         private readonly IClock _clock;
-        public MktContext(DbContextOptions options, IClock clock) : base(options)
+        private readonly IUserIdentifier _userIdentifier;
+
+        public MktContext(DbContextOptions options, IClock clock, IUserIdentifier userIdentifier) : base(options)
         {
             _clock = clock;
+            _userIdentifier = userIdentifier;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new BusinessConfiguration());
+            modelBuilder.ApplyConfiguration(new BusinessSubCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new NaturalPersonConfiguration());
             modelBuilder.ApplyConfiguration(new OfferConfiguration());
             modelBuilder.ApplyConfiguration(new PurchaseConfiguration());
             modelBuilder.ApplyConfiguration(new SubCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new AddressConfiguration());
+            modelBuilder.ApplyConfiguration(new PurchaseCompletedConfiguration());
 
             modelBuilder.Seeds();
             base.OnModelCreating(modelBuilder);
@@ -41,13 +48,13 @@ namespace _6MKT.BackOffice.Infra.Context
                 if (entityEntry.State == EntityState.Added)
                 {
                     entity.CreatedAt = _clock.GetUtcNow();
-                    //entity.CriadoPorId = _usuarioIdentidade?.UsuarioId;
+                    entity.CreatedId = _userIdentifier?.Id;
                 }
 
                 if (entityEntry.State != EntityState.Modified) return;
 
                 entity.ModifiedAt = _clock.GetUtcNow();
-                //entity.ModificadoPorId = _usuarioIdentidade?.UsuarioId;
+                entity.ModifiedId = _userIdentifier?.Id;
             });
 
             return base.SaveChangesAsync(cancellationToken);

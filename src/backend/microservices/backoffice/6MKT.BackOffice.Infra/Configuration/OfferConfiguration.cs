@@ -15,13 +15,9 @@ namespace _6MKT.BackOffice.Infra.Configuration
             builder
                 .HasOne(x => x.Purchase)
                 .WithMany(x => x.Offers)
-                .HasForeignKey(x => x.PurchaseId);
-
-            builder
-                .HasOne(x => x.Business)
-                .WithMany(x => x.Offers)
-                .HasForeignKey(x => x.BusinessId);
-            
+                .HasForeignKey(x => x.PurchaseId)
+                .OnDelete(DeleteBehavior.NoAction);
+                                          
             builder.ToTable("Offer", "backoffice");
         }
     }

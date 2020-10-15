@@ -1,4 +1,6 @@
-﻿using _6MKT.BackOffice.Domain.Enums;
+﻿using System;
+using _6MKT.BackOffice.Domain.Enums;
+using Newtonsoft.Json;
 
 namespace _6MKT.BackOffice.Api.Models.Requests.Purchases
 {
@@ -7,8 +9,11 @@ namespace _6MKT.BackOffice.Api.Models.Requests.Purchases
         public string Title { get; set; }
         public double AveragePrice { get; set; }
         public string Description { get; set; }
-        public PurchaseStatusEnum Status { get; set; } = PurchaseStatusEnum.Active;
-
+        public DateTimeOffset Date { get; set; }
         public long SubCategoryId { get; set; }
+        public int Quantity { get; set; }
+
+        [JsonIgnore]
+        public PurchaseStatusEnum Status { get; set; } = PurchaseStatusEnum.Active;
     }
 }

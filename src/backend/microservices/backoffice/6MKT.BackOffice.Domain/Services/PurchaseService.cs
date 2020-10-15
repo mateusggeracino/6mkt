@@ -1,12 +1,15 @@
 ﻿using _6MKT.BackOffice.Domain.Entities;
+using _6MKT.BackOffice.Domain.Enums;
+using _6MKT.BackOffice.Domain.Exceptions;
 using _6MKT.BackOffice.Domain.Repositories.Interfaces;
 using _6MKT.BackOffice.Domain.Services.Interfaces;
 using _6MKT.BackOffice.Domain.UnitOfWork;
-using System.Collections.Generic;
+using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
+using _6MKT.Common.EmailProviders;
+using _6MKT.Common.EmailProviders.Models;
 using System.Linq;
 using System.Threading.Tasks;
-using _6MKT.BackOffice.Domain.Exceptions;
-using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
+using _6MKT.BackOffice.Domain.ValueObjects.UserIdentifier;
 
 namespace _6MKT.BackOffice.Domain.Services
 {
@@ -14,11 +17,25 @@ namespace _6MKT.BackOffice.Domain.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPurchaseRepository _purchaseRepository;
+        private readonly IOfferRepository _offerRepository;
+        private readonly IEmailProvider _emailProvider;
+        private readonly IBusinessRepository _businessRepository;
+        private readonly ISubCategoryRepository _subCategoryRepository;
+        private readonly IUserIdentifier _userIdentifier;
 
-        public PurchaseService(IUnitOfWork unitOfWork, IPurchaseRepository purchaseRepository)
+        public PurchaseService(
+            IUnitOfWork unitOfWork, IPurchaseRepository purchaseRepository,
+            IOfferRepository offerRepository, IEmailProvider emailProvider, 
+            IBusinessRepository businessRepository, ISubCategoryRepository subCategoryRepository, 
+            IUserIdentifier userIdentifier)
         {
             _unitOfWork = unitOfWork;
             _purchaseRepository = purchaseRepository;
+            _offerRepository = offerRepository;
+            _emailProvider = emailProvider;
+            _businessRepository = businessRepository;
+            _subCategoryRepository = subCategoryRepository;
+            _userIdentifier = userIdentifier;
         }
 
         public async Task AddAsync(PurchaseEntity purchaseEntity)
@@ -28,10 +45,26 @@ namespace _6MKT.BackOffice.Domain.Services
             if (purchaseRegistered != null)
                 throw new ConflictException();
 
+            purchaseEntity.SetNaturalPersonId(_userIdentifier.Id);
             await _purchaseRepository.Add(purchaseEntity);
             await _unitOfWork.Commit();
+
+            await SendEmailToAllBusinessOnSubcategory(purchaseEntity).ConfigureAwait(false);
         }
 
+        private async Task SendEmailToAllBusinessOnSubcategory(PurchaseEntity purchase)
+        {
+            var subCategory = await _subCategoryRepository.GetById(purchase.SubCategoryId);
+            var emails = await _businessRepository.GetEmailsBySubcategoryAsync(purchase.SubCategoryId);
+
+            await _emailProvider.SendEmailToAllBusinessOnSubcategoryAsync(new EmailsToBusiness
+            {
+                PurchaseTitle = purchase.Title,
+                SubcategoryName = subCategory.Description,
+                Emails = emails
+            });
+        }
+        
         public async Task UpdateAsync(PurchaseEntity purchase)
         {
             var purchaseRegistered = await _purchaseRepository.GetById(purchase.Id);

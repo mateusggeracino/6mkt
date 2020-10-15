@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System;
 using _6MKT.BackOffice.Domain.Entities;
 using _6MKT.BackOffice.Domain.Enums;
 using _6MKT.BackOffice.Domain.Exceptions;
@@ -9,6 +6,11 @@ using _6MKT.BackOffice.Domain.Repositories.Interfaces;
 using _6MKT.BackOffice.Domain.Services.Interfaces;
 using _6MKT.BackOffice.Domain.UnitOfWork;
 using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
+using _6MKT.Common.EmailProviders;
+using _6MKT.Common.EmailProviders.Models;
+using System.Linq;
+using System.Threading.Tasks;
+using _6MKT.BackOffice.Domain.ValueObjects.UserIdentifier;
 
 namespace _6MKT.BackOffice.Domain.Services
 {
@@ -16,27 +18,35 @@ namespace _6MKT.BackOffice.Domain.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IOfferRepository _offerRepository;
-        private readonly IPurchaseService _purchaseService;
+        private readonly IPurchaseRepository _purchaseRepository;
+        private readonly IBusinessRepository _businessRepository;
+        private readonly IEmailProvider _emailProvider;
+        private readonly IUserIdentifier _userIdentifier;
 
-        public OfferService(IUnitOfWork unitOfWork, IOfferRepository offerRepository, IPurchaseService purchaseService)
+        public OfferService(
+            IUnitOfWork unitOfWork, IOfferRepository offerRepository,
+            IPurchaseRepository purchaseRepository, IBusinessRepository businessRepository,
+            IEmailProvider emailProvider, IUserIdentifier userIdentifier)
         {
             _unitOfWork = unitOfWork;
             _offerRepository = offerRepository;
-            _purchaseService = purchaseService;
+            _purchaseRepository = purchaseRepository;
+            _businessRepository = businessRepository;
+            _emailProvider = emailProvider;
+            _userIdentifier = userIdentifier;
         }
 
         public async Task AddAsync(OfferEntity offer)
         {
-            var purchase = await _purchaseService.GetByIdAsync(offer.PurchaseId);
+            var purchase = await ValidationPurchase(offer);
+            var business = await ValidationBusiness(_userIdentifier.Id, purchase);
 
-            if (purchase == null)
-                throw new NotFoundException();
-
-            if (purchase.Offers != null && purchase.Offers.Any(x => x.BusinessId == offer.BusinessId))
-                throw new ConflictException();
+            offer.SetBusinessId(_userIdentifier.Id);
 
             await _offerRepository.Add(offer);
             await _unitOfWork.Commit();
+
+            await SendEmail(purchase, business);
         }
 
         public async Task UpdateAsync(OfferEntity offer)
@@ -70,5 +80,47 @@ namespace _6MKT.BackOffice.Domain.Services
 
         public async Task<PageResponse<OfferEntity>> GetAllAsync(PageRequest page) =>
             await _offerRepository.GetAll(page);
+
+        private async Task<BusinessEntity> ValidationBusiness(long businessId, PurchaseEntity purchase)
+        {
+            var businessAllowed =
+                await _businessRepository.VerificationCategoriesBusiness(purchase.SubCategoryId);
+
+            if (!businessAllowed)
+                throw new ConflictException();
+
+            var business = await _businessRepository.GetById(businessId);
+
+            if (business == null)
+                throw new NotFoundException();
+
+            return business;
+        }
+
+        private async Task<PurchaseEntity> ValidationPurchase(OfferEntity offer)
+        {
+            var purchase = await _purchaseRepository.GetById(offer.PurchaseId);
+
+            if(purchase.Status == PurchaseStatusEnum.Finish || purchase.Status == PurchaseStatusEnum.Cancel)
+                throw new ConflictException();
+
+            if (purchase == null)
+                throw new NotFoundException();
+
+            if (purchase.Offers != null && purchase.Offers.Any(x => x.CreatedId == _userIdentifier.Id))
+                throw new ConflictException();
+
+            return purchase;
+        }
+
+        private async Task SendEmail(PurchaseEntity purchase, BusinessEntity business) =>
+            await _emailProvider.SendPublishedOfferAsync(new PublishedOfferEmailModel
+            {
+                ToEmail = purchase.NaturalPerson.Email,
+                ToName = purchase.NaturalPerson.Name,
+                BusinessTradename = business.TradeName,
+                PurchaseTitle = purchase.Title
+            });
+
     }
 }

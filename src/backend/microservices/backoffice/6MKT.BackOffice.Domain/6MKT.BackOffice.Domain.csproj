@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>_6MKT.BackOffice.Domain</RootNamespace>
   </PropertyGroup>
 
@@ -27,6 +27,10 @@
 
   <ItemGroup>
     <Folder Include="Wrapper\Models\Response\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\common\6MKT.Common\6MKT.Common.csproj" />
   </ItemGroup>
 
 </Project>

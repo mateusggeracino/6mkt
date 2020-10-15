@@ -8,6 +8,7 @@ using _6MKT.BackOffice.Infra.Context;
 using _6MKT.BackOffice.Infra.Repositories;
 using _6MKT.BackOffice.Infra.UnitOfWork;
 using _6MKT.Common.Clock;
+using _6MKT.Common.EmailProviders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -26,6 +27,7 @@ namespace _6MKT.BackOffice.Api.Extensions
             services.AddSingleton(MapperConfig.Config().CreateMapper());
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IClock, Clock>();
+            services.AddScoped<IEmailProvider, EmailProvider>();
 
             Services(services);
             Repositories(services);
@@ -39,6 +41,8 @@ namespace _6MKT.BackOffice.Api.Extensions
             services.AddScoped<ISubCategoryService, SubCategoryService>();
             services.AddScoped<IOfferService, OfferService>();
             services.AddScoped<IPurchaseService, PurchaseService>();
+            services.AddScoped<IPurchaseCompletedService, PurchaseCompletedService>();
+            services.AddScoped<IUserIdentifierService, UserIdentifierService>();
         }
 
         private static void Repositories(IServiceCollection services)
@@ -49,6 +53,7 @@ namespace _6MKT.BackOffice.Api.Extensions
             services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
             services.AddScoped<IOfferRepository, OfferRepository>();
             services.AddScoped<IPurchaseRepository, PurchaseRepository>();
+            services.AddScoped<IPurchaseCompletedRepository, PurchaseCompletedRepository>();
         }
     }
 }

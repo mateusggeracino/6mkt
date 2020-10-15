@@ -17,10 +17,7 @@ namespace _6MKT.BackOffice.Infra.Configuration
                 .HasOne(x => x.SubCategory)
                 .WithMany(x => x.Purchases)
                 .HasForeignKey(x => x.SubCategoryId);
-
-            builder
-                .HasMany(x => x.Offers);
-
+            
             builder.ToTable("Purchase", "backoffice");
         }
     }

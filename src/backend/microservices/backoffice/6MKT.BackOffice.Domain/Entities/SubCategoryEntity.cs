@@ -12,6 +12,8 @@ namespace _6MKT.BackOffice.Domain.Entities
 
         public IEnumerable<PurchaseEntity> Purchases { get; set; }
 
+        public IEnumerable<BusinessSubCategory> Businesses { get; set; }
+
         public static IEnumerable<SubCategoryEntity> Seed()
         {
             return new List<SubCategoryEntity>
@@ -32,4 +34,6 @@ namespace _6MKT.BackOffice.Domain.Entities
             };
         }
     }
+
+
 }

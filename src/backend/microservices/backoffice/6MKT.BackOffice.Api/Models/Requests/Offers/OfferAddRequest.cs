@@ -4,8 +4,8 @@
     {
         public string Description { get; set; }
         public bool InStock { get; set; }
+        public double Price { get; set; }
 
         public long PurchaseId { get; set; }
-        public long BusinessId { get; set; }
     }
 }

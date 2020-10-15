@@ -1,4 +1,5 @@
-﻿using _6MKT.BackOffice.Api.Attributes;
+﻿using System;
+using _6MKT.BackOffice.Api.Attributes;
 using _6MKT.BackOffice.Api.Models.Requests.Business;
 using _6MKT.BackOffice.Api.Models.Responses.Business;
 using _6MKT.BackOffice.Domain.Constants;
@@ -9,6 +10,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace _6MKT.BackOffice.Api.Controllers
 {
@@ -24,7 +27,7 @@ namespace _6MKT.BackOffice.Api.Controllers
             _mapper = mapper;
             _businessService = businessService;
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] BusinessAddRequest business)
         {

@@ -1,7 +1,6 @@
 using _6MKT.BackOffice.Api.Extensions;
 using _6MKT.BackOffice.Api.Jobs;
 using _6MKT.BackOffice.Domain.ValueObjects.AppSettings;
-using _6MKT.Common.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

@@ -10,6 +10,7 @@ using _6MKT.BackOffice.Domain.Exceptions;
 using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
 using _6MKT.BackOffice.Domain.ValueObjects.Password;
 using _6MKT.BackOffice.Domain.ValueObjects.Token;
+using _6MKT.BackOffice.Domain.ValueObjects.UserIdentifier;
 using _6MKT.BackOffice.Domain.Wrapper.Endpoint;
 using _6MKT.BackOffice.Domain.Wrapper.Models.Request;
 
@@ -20,14 +21,16 @@ namespace _6MKT.BackOffice.Domain.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly INaturalPersonRepository _naturalPersonRepository;
         private readonly IUserSsoEndpoint _userSsoEndpoint;
+        private readonly IUserIdentifier _userIdentifier;
 
         public NaturalPersonService(
             IUnitOfWork unitOfWork, INaturalPersonRepository naturalPersonRepository,
-            IUserSsoEndpoint userSsoEndpoint)
+            IUserSsoEndpoint userSsoEndpoint, IUserIdentifier userIdentifier)
         {
             _unitOfWork = unitOfWork;
             _naturalPersonRepository = naturalPersonRepository;
             _userSsoEndpoint = userSsoEndpoint;
+            _userIdentifier = userIdentifier;
         }
 
         public async Task AddAsync(NaturalPersonEntity naturalPersonEntity)
