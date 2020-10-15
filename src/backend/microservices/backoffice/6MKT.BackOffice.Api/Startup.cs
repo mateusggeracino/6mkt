@@ -29,6 +29,7 @@ namespace _6MKT.BackOffice.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddHostedService<MigrationJob>();
             services.AddControllers();
 
@@ -49,6 +50,12 @@ namespace _6MKT.BackOffice.Api
             app.UseRouting();
 
             app.AddIdentityConfiguration();
+
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials());
 
             app.UseEndpoints(endpoints =>
             {
