@@ -35,6 +35,7 @@ namespace _6MKT.Identity.Api
             services.ConfigureDependencyInjection(_appSettings);
             services.AddAuthenticationJwt(Configuration);
             services.ConfigIdentity();
+            services.AddCors();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -48,6 +49,12 @@ namespace _6MKT.Identity.Api
             app.UseRouting();
 
             app.AddIdentityConfiguration();
+
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials());
 
             app.UseEndpoints(endpoints =>
             {
