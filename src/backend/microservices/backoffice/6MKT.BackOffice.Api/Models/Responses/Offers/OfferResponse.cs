@@ -6,6 +6,7 @@ namespace _6MKT.BackOffice.Api.Models.Responses.Offers
     {
         public string Description { get; set; }
         public bool InStock { get; set; }
+        public double Price { get; set; }
         
         public BusinessResponse Business { get; set; }
     }

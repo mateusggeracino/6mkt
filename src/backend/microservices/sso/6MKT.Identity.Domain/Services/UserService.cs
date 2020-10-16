@@ -90,7 +90,8 @@ namespace _6MKT.Identity.Domain.Services
             return new Token
             {
                 AccessToken = encodedToken,
-                ExpiresIn = TimeSpan.FromHours(_appSettings.Jwt.ExpireIn).TotalSeconds
+                ExpiresIn = TimeSpan.FromHours(_appSettings.Jwt.ExpireIn).TotalSeconds,
+                TypeUser = user.Type.ToString()
             };
         }
 

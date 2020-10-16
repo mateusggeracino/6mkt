@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using _6MKT.BackOffice.Api.Attributes;
+using _6MKT.BackOffice.Api.Models.Responses.Purchases;
 using _6MKT.BackOffice.Domain.Constants;
 using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
+using _6MKT.BackOffice.Domain.ValueObjects.Purchase;
 
 namespace _6MKT.BackOffice.Api.Controllers
 {
@@ -18,11 +20,13 @@ namespace _6MKT.BackOffice.Api.Controllers
     {
         private readonly IMapper _mapper;
         private readonly INaturalPersonService _naturalPersonService;
+        private readonly IPurchaseService _purchaseService;
 
-        public NaturalPersonController(IMapper mapper, INaturalPersonService naturalPersonService)
+        public NaturalPersonController(IMapper mapper, INaturalPersonService naturalPersonService, IPurchaseService purchaseService)
         {
             _mapper = mapper;
             _naturalPersonService = naturalPersonService;
+            _purchaseService = purchaseService;
         }
         
         [HttpPost]
@@ -63,6 +67,14 @@ namespace _6MKT.BackOffice.Api.Controllers
         {
             var naturalPeople = await _naturalPersonService.GetAllAsync(page);
             return Ok(_mapper.Map<PageResponse<NaturalPersonResponse>>(naturalPeople));
+        }
+
+        [HttpPost("get-all-purchase")]
+        [AuthorizeProfile(UserTypesConstants.NaturalPerson)]
+        public async Task<ActionResult<PageResponse<Purchases>>> GetAllPurchase([FromBody] PageRequest page)
+        {
+            var purchases = await _purchaseService.GetAllByNaturalPersonAsync(page);
+            return Ok(_mapper.Map<PageResponse<Purchases>>(purchases));
         }
     }
 }

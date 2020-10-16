@@ -4,5 +4,6 @@
     {
         public string AccessToken { get; set; }
         public double ExpiresIn { get; set; }
+        public string TypeUser { get; set; }
     }
 }

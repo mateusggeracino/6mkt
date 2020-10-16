@@ -1,4 +1,5 @@
-﻿using _6MKT.BackOffice.Domain.Entities;
+﻿using System.Collections.Generic;
+using _6MKT.BackOffice.Domain.Entities;
 using _6MKT.BackOffice.Domain.Enums;
 using _6MKT.BackOffice.Domain.Exceptions;
 using _6MKT.BackOffice.Domain.Repositories.Interfaces;
@@ -9,6 +10,7 @@ using _6MKT.Common.EmailProviders;
 using _6MKT.Common.EmailProviders.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using _6MKT.BackOffice.Domain.ValueObjects.Purchase;
 using _6MKT.BackOffice.Domain.ValueObjects.UserIdentifier;
 
 namespace _6MKT.BackOffice.Domain.Services
@@ -95,5 +97,8 @@ namespace _6MKT.BackOffice.Domain.Services
 
         public async Task<PageResponse<PurchaseEntity>> GetAllAsync(PageRequest page) =>
             await _purchaseRepository.GetAll(page);
+
+        public async Task<PageResponse<Purchases>> GetAllByNaturalPersonAsync(PageRequest page) =>
+            await _purchaseRepository.GetAllByNaturalPersonAsync(page);
     }
 }
