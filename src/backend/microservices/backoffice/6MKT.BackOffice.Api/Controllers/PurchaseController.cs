@@ -5,9 +5,9 @@ using _6MKT.BackOffice.Domain.Constants;
 using _6MKT.BackOffice.Domain.Entities;
 using _6MKT.BackOffice.Domain.Services.Interfaces;
 using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
+using _6MKT.BackOffice.Domain.ValueObjects.Purchase;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace _6MKT.BackOffice.Api.Controllers
@@ -62,10 +62,10 @@ namespace _6MKT.BackOffice.Api.Controllers
         }
 
         [HttpPost("get-all")]
-        public async Task<ActionResult<PageResponse<PurchaseResponse>>> GetAll([FromBody] PageRequest page)
+        public async Task<ActionResult<PageResponse<Purchases>>> GetAll([FromBody] PageRequest page)
         {
-            var purchaseEntity = await _purchaseService.GetAllAsync(page);
-            return Ok(_mapper.Map<PageResponse<PurchaseResponse>>(purchaseEntity));
+            var purchaseEntity = await _purchaseService.GetAllListAsync(page);
+            return Ok(_mapper.Map<PageResponse<Purchases>>(purchaseEntity));
         }
 
         [HttpPost("{purchaseId:long}/acceptance/{offerId:long}")]

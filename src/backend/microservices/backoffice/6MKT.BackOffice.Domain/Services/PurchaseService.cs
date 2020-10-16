@@ -98,6 +98,9 @@ namespace _6MKT.BackOffice.Domain.Services
 
         public async Task<PageResponse<PurchaseEntity>> GetAllAsync(PageRequest page) =>
             await _purchaseRepository.GetAll(page);
+        
+        public async Task<PageResponse<Purchases>> GetAllListAsync(PageRequest page) =>
+            await _purchaseRepository.GetAllAsync(page);
 
         public async Task<PageResponse<Purchases>> GetAllByNaturalPersonAsync(PageRequest page) =>
             await _purchaseRepository.GetAllByNaturalPersonAsync(page);

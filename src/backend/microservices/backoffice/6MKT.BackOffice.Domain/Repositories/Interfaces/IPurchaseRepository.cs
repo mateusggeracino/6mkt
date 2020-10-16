@@ -9,5 +9,6 @@ namespace _6MKT.BackOffice.Domain.Repositories.Interfaces
     {
         Task<PurchaseEntity> GetByPurchase(PurchaseEntity purchaseEntity);
         Task<PageResponse<Purchases>> GetAllByNaturalPersonAsync(PageRequest page);
+        Task<PageResponse<Purchases>> GetAllAsync(PageRequest page);
     }
 }
