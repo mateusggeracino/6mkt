@@ -90,7 +90,6 @@ namespace _6MKT.BackOffice.Infra.Repositories
                 join offer in offerDb on purchaseCompleted.OfferId equals offer.Id
                 join business in businessDb on offer.BusinessId equals business.Id
                 join subCategory in subCategoryDb on purchase.SubCategoryId equals subCategory.Id
-                where purchase.NaturalPersonId == _userIdentifier.Id
                 select new Purchases
                 {
                     Id = purchase.Id,
