@@ -45,6 +45,7 @@ namespace _6MKT.BackOffice.Infra.Repositories
                 where purchase.NaturalPersonId == _userIdentifier.Id
                 select new Purchases
                 {
+                    Id = purchase.Id,
                     Title = purchase.Title,
                     AveragePrice = purchase.AveragePrice,
                     Description = purchase.Description,

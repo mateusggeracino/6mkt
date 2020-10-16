@@ -6,6 +6,7 @@ using _6MKT.BackOffice.Domain.UnitOfWork;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using _6MKT.BackOffice.Domain.Constants;
 using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
 
 namespace _6MKT.BackOffice.Domain.Services
@@ -26,7 +27,7 @@ namespace _6MKT.BackOffice.Domain.Services
             var categoryRegisted = await _categoryRepository.GetByDescription(category.Description);
 
             if(categoryRegisted != null)
-                throw new ConflictException();
+                throw new ConflictException(MessageExceptionConstants.RegisteredException);
 
             await _categoryRepository.Add(category);
             await _unitOfWork.Commit();
@@ -37,7 +38,7 @@ namespace _6MKT.BackOffice.Domain.Services
             var categoryRegisted = await _categoryRepository.GetById(category.Id);
 
             if(categoryRegisted == null)
-                throw new NotFoundException();
+                throw new NotFoundException(MessageExceptionConstants.NotFoundException);
 
             await _categoryRepository.Update(category);
             await _unitOfWork.Commit();
@@ -48,7 +49,7 @@ namespace _6MKT.BackOffice.Domain.Services
             var category = await _categoryRepository.GetById(id);
 
             if(category.SubCategories != null && category.SubCategories.Any())
-                throw new ConflictException();
+                throw new ConflictException(MessageExceptionConstants.RelatedWithAnotherObject);
 
             await _categoryRepository.Remove(category);
             await _unitOfWork.Commit();

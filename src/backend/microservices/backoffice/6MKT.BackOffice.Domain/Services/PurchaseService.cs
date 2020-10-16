@@ -10,6 +10,7 @@ using _6MKT.Common.EmailProviders;
 using _6MKT.Common.EmailProviders.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using _6MKT.BackOffice.Domain.Constants;
 using _6MKT.BackOffice.Domain.ValueObjects.Purchase;
 using _6MKT.BackOffice.Domain.ValueObjects.UserIdentifier;
 
@@ -45,7 +46,7 @@ namespace _6MKT.BackOffice.Domain.Services
             var purchaseRegistered = await _purchaseRepository.GetByPurchase(purchaseEntity);
 
             if (purchaseRegistered != null)
-                throw new ConflictException();
+                throw new ConflictException(MessageExceptionConstants.RegisteredException);
 
             purchaseEntity.SetNaturalPersonId(_userIdentifier.Id);
             await _purchaseRepository.Add(purchaseEntity);
@@ -72,7 +73,7 @@ namespace _6MKT.BackOffice.Domain.Services
             var purchaseRegistered = await _purchaseRepository.GetById(purchase.Id);
 
             if (purchaseRegistered == null)
-                throw new NotFoundException();
+                throw new NotFoundException(MessageExceptionConstants.NotFoundException);
 
             await _purchaseRepository.Update(purchase);
             await _unitOfWork.Commit();
@@ -83,10 +84,10 @@ namespace _6MKT.BackOffice.Domain.Services
             var purchase = await _purchaseRepository.GetById(id);
 
             if (purchase == null)
-                throw new NotFoundException();
+                throw new NotFoundException(MessageExceptionConstants.NotFoundException);
 
             if (purchase.Offers.Any())
-                throw new ConflictException();
+                throw new ConflictException(MessageExceptionConstants.RelatedWithAnotherObject);
 
             await _purchaseRepository.Remove(purchase);
             await _unitOfWork.Commit();

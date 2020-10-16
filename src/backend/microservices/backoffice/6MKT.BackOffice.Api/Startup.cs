@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.IO;
+using _6MKT.BackOffice.Api.Filters;
 
 namespace _6MKT.BackOffice.Api
 {
@@ -37,6 +38,7 @@ namespace _6MKT.BackOffice.Api
             services.SwaggerServices();
             services.AddAuthenticationJwt(Configuration);
             services.AddRefit();
+            services.AddFilters();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

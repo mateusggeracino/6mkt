@@ -14,6 +14,7 @@ namespace _6MKT.BackOffice.Api.Models.Responses.Purchases
         public double AveragePrice { get; set; }
         public string Description { get; set; }
         public PurchaseStatusEnum Status { get; set; }
+        public int Quantity { get; set; }
 
         public SubCategoryResponse SubCategory { get; set; }
 

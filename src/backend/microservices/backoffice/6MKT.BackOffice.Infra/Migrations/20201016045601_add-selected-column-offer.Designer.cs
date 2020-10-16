@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using _6MKT.BackOffice.Infra.Context;
 
 namespace _6MKT.BackOffice.Infra.Migrations
 {
     [DbContext(typeof(MktContext))]
-    partial class MktContextModelSnapshot : ModelSnapshot
+    [Migration("20201016045601_add-selected-column-offer")]
+    partial class addselectedcolumnoffer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

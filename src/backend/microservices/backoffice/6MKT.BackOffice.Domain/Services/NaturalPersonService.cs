@@ -5,6 +5,7 @@ using _6MKT.BackOffice.Domain.Repositories.Interfaces;
 using _6MKT.BackOffice.Domain.Services.Interfaces;
 using _6MKT.BackOffice.Domain.UnitOfWork;
 using System.Threading.Tasks;
+using _6MKT.BackOffice.Domain.Constants;
 using _6MKT.BackOffice.Domain.Enums;
 using _6MKT.BackOffice.Domain.Exceptions;
 using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
@@ -37,11 +38,11 @@ namespace _6MKT.BackOffice.Domain.Services
         {
             var naturalPerson = await _naturalPersonRepository.GetBySocialNumber(naturalPersonEntity.SocialNumber);
             if (naturalPerson != null)
-                throw new ConflictException();
+                throw new ConflictException(MessageExceptionConstants.RegisteredException);
 
             var emailRegistered = await _naturalPersonRepository.GetByEmail(naturalPersonEntity.Email);
             if (emailRegistered)
-                throw new ConflictException();
+                throw new ConflictException(MessageExceptionConstants.EmailRegisteredException);
 
             var result = await CreateUserSso(naturalPersonEntity);
             if (string.IsNullOrWhiteSpace(result))
@@ -72,7 +73,7 @@ namespace _6MKT.BackOffice.Domain.Services
             var naturalPerson = await _naturalPersonRepository.GetBySocialNumber(naturalPersonEntity.SocialNumber);
 
             if (naturalPerson == null)
-                throw new NotFoundException();
+                throw new NotFoundException(MessageExceptionConstants.NotFoundException);
 
             await _naturalPersonRepository.Update(naturalPersonEntity);
             await _unitOfWork.Commit();
@@ -83,7 +84,7 @@ namespace _6MKT.BackOffice.Domain.Services
             var naturalPerson = await _naturalPersonRepository.GetById(naturalPersonId);
 
             if (naturalPerson == null)
-                throw new NotFoundException();
+                throw new NotFoundException(MessageExceptionConstants.NotFoundException);
 
             await _naturalPersonRepository.Update(naturalPerson);
             await _unitOfWork.Commit();

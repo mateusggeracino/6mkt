@@ -41,8 +41,10 @@ namespace _6MKT.BackOffice.Infra.Repositories
                     select natural.Email).AnyAsync();
         }
 
-        public async Task<bool> VerificationCategoriesBusiness(long subCategoryId) =>
-            await NoTracking().AnyAsync(x => x.SubCategories.Any(s => s.SubCategoryId == subCategoryId));
+        public async Task<bool> VerificationCategoriesBusiness(long businessId, long subCategoryId) =>
+            await NoTracking().AnyAsync(x => 
+                x.Id == businessId && 
+                x.SubCategories.Any(s => s.SubCategoryId == subCategoryId));
 
         public async Task<IEnumerable<Tuple<string, string>>> GetEmailsBySubcategoryAsync(long subCategoryId) =>
             await

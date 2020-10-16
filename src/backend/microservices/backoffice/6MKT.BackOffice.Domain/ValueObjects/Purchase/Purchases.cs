@@ -1,10 +1,8 @@
-﻿using _6MKT.BackOffice.Domain.Entities;
-using _6MKT.BackOffice.Domain.Enums;
-
-namespace _6MKT.BackOffice.Domain.ValueObjects.Purchase
+﻿namespace _6MKT.BackOffice.Domain.ValueObjects.Purchase
 {
     public class Purchases
     {
+        public long Id { get; set; }
         public string Title { get; set; }
         public double AveragePrice { get; set; }
         public string Description { get; set; }

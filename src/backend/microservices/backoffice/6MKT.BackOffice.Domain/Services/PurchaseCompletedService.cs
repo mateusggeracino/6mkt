@@ -7,6 +7,7 @@ using _6MKT.BackOffice.Domain.UnitOfWork;
 using _6MKT.Common.EmailProviders;
 using _6MKT.Common.EmailProviders.Models;
 using System.Threading.Tasks;
+using _6MKT.BackOffice.Domain.Constants;
 
 namespace _6MKT.BackOffice.Domain.Services
 {
@@ -35,14 +36,15 @@ namespace _6MKT.BackOffice.Domain.Services
             var purchase = await _purchaseRepository.GetById(purchaseCompleted.PurchaseId);
 
             if (purchase == null)
-                throw new NotFoundException();
+                throw new NotFoundException(MessageExceptionConstants.NotFoundException);
 
             var offer = await _offerRepository.GetById(purchaseCompleted.OfferId);
 
             if (offer == null)
-                throw new NotFoundException();
+                throw new NotFoundException(MessageExceptionConstants.NotFoundException);
 
             purchase.SetStatus(PurchaseStatusEnum.Finish);
+            offer.SetSelected();
             await _purchaseCompletedRepository.Add(purchaseCompleted);
             await _unitOfWork.Commit();
 

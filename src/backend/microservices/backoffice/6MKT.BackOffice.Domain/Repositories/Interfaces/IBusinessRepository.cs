@@ -10,7 +10,7 @@ namespace _6MKT.BackOffice.Domain.Repositories.Interfaces
     {
         Task<BusinessEntity> GetByRegisteredNumber(string businessEntityRegisteredNumber);
         Task<bool> GetByEmail(string email);
-        Task<bool> VerificationCategoriesBusiness(long purchaseSubCategoryId);
+        Task<bool> VerificationCategoriesBusiness(long subCategoryId, long purchaseSubCategoryId);
         Task<IEnumerable<Tuple<string, string>>> GetEmailsBySubcategoryAsync(long subCategoryId);
         Task<IUserIdentifier> GetByProviderIdAsync(string providerId);
     }

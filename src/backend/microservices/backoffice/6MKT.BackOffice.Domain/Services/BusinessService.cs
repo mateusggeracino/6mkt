@@ -5,6 +5,7 @@ using _6MKT.BackOffice.Domain.Services.Interfaces;
 using _6MKT.BackOffice.Domain.UnitOfWork;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using _6MKT.BackOffice.Domain.Constants;
 using _6MKT.BackOffice.Domain.Enums;
 using _6MKT.BackOffice.Domain.Exceptions;
 using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
@@ -34,11 +35,11 @@ namespace _6MKT.BackOffice.Domain.Services
         {
             var business = await _businessRepository.GetByRegisteredNumber(businessEntity.RegisteredNumber);
             if (business != null)
-                throw new ConflictException();
+                throw new ConflictException(MessageExceptionConstants.RegisteredException);
 
             var emailRegistered = await _businessRepository.GetByEmail(businessEntity.Email);
             if (emailRegistered)
-                throw new ConflictException();
+                throw new ConflictException(MessageExceptionConstants.EmailRegisteredException);
 
             var result = await CreateUserSso(businessEntity);
 
@@ -55,7 +56,7 @@ namespace _6MKT.BackOffice.Domain.Services
             var business = await _businessRepository.GetByRegisteredNumber(businessEntity.RegisteredNumber);
 
             if (business == null)
-                throw new NotFoundException();
+                throw new NotFoundException(MessageExceptionConstants.NotFoundException);
 
             await _businessRepository.Update(business);
             await _unitOfWork.Commit();
@@ -66,7 +67,7 @@ namespace _6MKT.BackOffice.Domain.Services
             var business = await _businessRepository.GetById(businessId);
 
             if (business == null)
-                throw new NotFoundException();
+                throw new NotFoundException(MessageExceptionConstants.NotFoundException);
 
             await _businessRepository.Update(business);
             await _unitOfWork.Commit();

@@ -5,6 +5,7 @@ using _6MKT.BackOffice.Domain.Services.Interfaces;
 using _6MKT.BackOffice.Domain.UnitOfWork;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using _6MKT.BackOffice.Domain.Constants;
 using _6MKT.BackOffice.Domain.ValueObjects.Pagination;
 
 namespace _6MKT.BackOffice.Domain.Services
@@ -27,12 +28,12 @@ namespace _6MKT.BackOffice.Domain.Services
             var subCategoryRegistered = await _subCategoryRepository.GetByDescription(subCategory.Description);
 
             if(subCategoryRegistered != null)
-                throw new ConflictException();
+                throw new ConflictException(MessageExceptionConstants.RegisteredException);
 
             var category = await _categoryRepository.GetById(subCategory.CategoryId);
 
             if(category == null)
-                throw new NotFoundException();
+                throw new NotFoundException(MessageExceptionConstants.NotFoundException);
 
             await _subCategoryRepository.Add(subCategory);
             await _unitOfWork.Commit();
@@ -43,14 +44,14 @@ namespace _6MKT.BackOffice.Domain.Services
             var subCategoryRegistered = await _subCategoryRepository.GetById(subCategory.Id);
 
             if(subCategoryRegistered == null)
-                throw new NotFoundException();
+                throw new NotFoundException(MessageExceptionConstants.NotFoundException);
 
             if (subCategoryRegistered.CategoryId != subCategory.CategoryId)
             {
                 var category = await _categoryRepository.GetById(subCategory.CategoryId);
 
                 if (category == null)
-                    throw new NotFoundException();
+                    throw new NotFoundException(MessageExceptionConstants.NotFoundException);
             }
             
             await _subCategoryRepository.Update(subCategory);
@@ -62,7 +63,7 @@ namespace _6MKT.BackOffice.Domain.Services
             var subCategoryRegistered = await _subCategoryRepository.GetById(id);
 
             if(subCategoryRegistered == null)
-                throw new NotFoundException();
+                throw new NotFoundException(MessageExceptionConstants.NotFoundException);
 
             await _subCategoryRepository.Remove(subCategoryRegistered);
             await _unitOfWork.Commit();

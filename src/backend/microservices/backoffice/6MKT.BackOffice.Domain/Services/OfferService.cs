@@ -10,6 +10,7 @@ using _6MKT.Common.EmailProviders;
 using _6MKT.Common.EmailProviders.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using _6MKT.BackOffice.Domain.Constants;
 using _6MKT.BackOffice.Domain.ValueObjects.UserIdentifier;
 
 namespace _6MKT.BackOffice.Domain.Services
@@ -54,11 +55,11 @@ namespace _6MKT.BackOffice.Domain.Services
             var offerRegistered = await _offerRepository.GetById(offer.Id);
 
             if (offerRegistered == null)
-                throw new NotFoundException();
+                throw new NotFoundException(MessageExceptionConstants.NotFoundException);
 
             if (offerRegistered.Purchase?.Status == PurchaseStatusEnum.Finish ||
                offerRegistered.Purchase?.Status == PurchaseStatusEnum.Cancel)
-                throw new ConflictException();
+                throw new ConflictException(MessageExceptionConstants.PurchaseFinishOrCancelException);
 
             await _offerRepository.Update(offer);
             await _unitOfWork.Commit();
@@ -69,7 +70,7 @@ namespace _6MKT.BackOffice.Domain.Services
             var offer = await _offerRepository.GetById(offerId);
 
             if (offer == null)
-                throw new NotFoundException();
+                throw new NotFoundException(MessageExceptionConstants.NotFoundException);
 
             await _offerRepository.Remove(offer);
             await _unitOfWork.Commit();
@@ -84,15 +85,15 @@ namespace _6MKT.BackOffice.Domain.Services
         private async Task<BusinessEntity> ValidationBusiness(long businessId, PurchaseEntity purchase)
         {
             var businessAllowed =
-                await _businessRepository.VerificationCategoriesBusiness(purchase.SubCategoryId);
+                await _businessRepository.VerificationCategoriesBusiness(businessId, purchase.SubCategoryId);
 
             if (!businessAllowed)
-                throw new ConflictException();
+                throw new ConflictException(MessageExceptionConstants.NotInYourSubcategoriesException);
 
             var business = await _businessRepository.GetById(businessId);
 
             if (business == null)
-                throw new NotFoundException();
+                throw new NotFoundException(MessageExceptionConstants.NotFoundException);
 
             return business;
         }
@@ -102,13 +103,13 @@ namespace _6MKT.BackOffice.Domain.Services
             var purchase = await _purchaseRepository.GetById(offer.PurchaseId);
 
             if(purchase.Status == PurchaseStatusEnum.Finish || purchase.Status == PurchaseStatusEnum.Cancel)
-                throw new ConflictException();
+                throw new ConflictException(MessageExceptionConstants.PurchaseFinishOrCancelException);
 
             if (purchase == null)
-                throw new NotFoundException();
+                throw new NotFoundException(MessageExceptionConstants.NotFoundException);
 
             if (purchase.Offers != null && purchase.Offers.Any(x => x.CreatedId == _userIdentifier.Id))
-                throw new ConflictException();
+                throw new ConflictException(MessageExceptionConstants.CreateTwoOfferOnSamePurchaseException);
 
             return purchase;
         }
