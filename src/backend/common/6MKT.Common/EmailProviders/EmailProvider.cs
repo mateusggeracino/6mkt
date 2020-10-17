@@ -10,11 +10,11 @@ namespace _6MKT.Common.EmailProviders
 {
     public class EmailProvider : IEmailProvider
     {
-        private const string ApiKey = "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";
+        private const string ApiKey = "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";
         private readonly EmailAddress _default;
 
         public EmailProvider() =>
-            _default = new EmailAddress("mateusgoncalvesgeracino@hotmail.com", "Equipe 6MKT");
+            _default = new EmailAddress("esojep@hotmail.com", "Equipe 6MKT");
 
 
         public async Task SendPasswordAsync(PasswordEmailModel email) =>

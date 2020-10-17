@@ -43,10 +43,10 @@ namespace _6MKT.BackOffice.Domain.Services
 
         public async Task AddAsync(PurchaseEntity purchaseEntity)
         {
-            var purchaseRegistered = await _purchaseRepository.GetByPurchase(purchaseEntity);
+            //var purchaseRegistered = await _purchaseRepository.GetByPurchase(purchaseEntity);
 
-            if (purchaseRegistered != null)
-                throw new ConflictException(MessageExceptionConstants.RegisteredException);
+            //if (purchaseRegistered != null)
+            //    throw new ConflictException(MessageExceptionConstants.RegisteredException);
 
             purchaseEntity.SetNaturalPersonId(_userIdentifier.Id);
             await _purchaseRepository.Add(purchaseEntity);
