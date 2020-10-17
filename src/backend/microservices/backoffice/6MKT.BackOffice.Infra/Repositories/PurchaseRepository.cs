@@ -80,7 +80,8 @@ namespace _6MKT.BackOffice.Infra.Repositories
                     Description = purchase.Description,
                     Status = purchase.Status.ToString(),
                     Quantity = purchase.Quantity,
-                    TotalOffer = purchase.Offers.Count()
+                    TotalOffer = purchase.Offers.Count(),
+                    Subcategory = subCategory.Description
                 };
 
             var skip = page.PageIndex * page.PageSize;
