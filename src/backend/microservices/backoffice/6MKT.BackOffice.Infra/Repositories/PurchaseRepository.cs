@@ -28,16 +28,10 @@ namespace _6MKT.BackOffice.Infra.Repositories
 
         public async Task<PageResponse<Purchases>> GetAllByNaturalPersonAsync(PageRequest page)
         {
-            var purchaseCompletedDb = Db.Set<PurchaseCompletedEntity>();
-            var businessDb = Db.Set<BusinessEntity>();
-            var offerDb = Db.Set<OfferEntity>();
             var subCategoryDb = Db.Set<SubCategoryEntity>();
 
             var query =
                 from purchase in DbSet
-                from purchaseCompleted in purchaseCompletedDb.DefaultIfEmpty()
-                join offer in offerDb on purchaseCompleted.OfferId equals offer.Id
-                join business in businessDb on offer.BusinessId equals business.Id
                 join subCategory in subCategoryDb on purchase.SubCategoryId equals subCategory.Id
                 where purchase.NaturalPersonId == _userIdentifier.Id 
                 select new Purchases
@@ -48,15 +42,7 @@ namespace _6MKT.BackOffice.Infra.Repositories
                     Description = purchase.Description,
                     Status = purchase.Status.ToString(),
                     Quantity = purchase.Quantity,
-                    Subcategory = subCategory.Description,
-                    TotalOffer = purchase.Offers.Count(),
-                    Offer = new Offers
-                    {
-                        Description = offer.Description,
-                        TradeName = offer.Business.TradeName,
-                        InStock = offer.InStock,
-                        Price = offer.Price
-                    }
+                    TotalOffer = purchase.Offers.Count()
                 };
 
             var skip = page.PageIndex * page.PageSize;
@@ -79,16 +65,10 @@ namespace _6MKT.BackOffice.Infra.Repositories
 
         public async Task<PageResponse<Purchases>> GetAllAsync(PageRequest page)
         {
-            var purchaseCompletedDb = Db.Set<PurchaseCompletedEntity>();
-            var businessDb = Db.Set<BusinessEntity>();
-            var offerDb = Db.Set<OfferEntity>();
             var subCategoryDb = Db.Set<SubCategoryEntity>();
 
             var query =
                 from purchase in DbSet
-                from purchaseCompleted in purchaseCompletedDb.Where(x => x.PurchaseId == purchase.Id)
-                join offer in offerDb on purchaseCompleted.OfferId equals offer.Id
-                join business in businessDb on offer.BusinessId equals business.Id
                 join subCategory in subCategoryDb on purchase.SubCategoryId equals subCategory.Id
                 select new Purchases
                 {
@@ -98,15 +78,7 @@ namespace _6MKT.BackOffice.Infra.Repositories
                     Description = purchase.Description,
                     Status = purchase.Status.ToString(),
                     Quantity = purchase.Quantity,
-                    Subcategory = subCategory.Description,
-                    TotalOffer = purchase.Offers.Count(),
-                    Offer = new Offers
-                    {
-                        Description = offer.Description,
-                        TradeName = offer.Business.TradeName,
-                        InStock = offer.InStock,
-                        Price = offer.Price
-                    }
+                    TotalOffer = purchase.Offers.Count()
                 };
 
             var skip = page.PageIndex * page.PageSize;

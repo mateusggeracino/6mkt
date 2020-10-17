@@ -25,12 +25,13 @@ namespace _6MKT.BackOffice.Domain.Services
         private readonly IBusinessRepository _businessRepository;
         private readonly ISubCategoryRepository _subCategoryRepository;
         private readonly IUserIdentifier _userIdentifier;
+        private readonly IPurchaseCompletedRepository _completedRepository;
 
         public PurchaseService(
             IUnitOfWork unitOfWork, IPurchaseRepository purchaseRepository,
             IOfferRepository offerRepository, IEmailProvider emailProvider, 
             IBusinessRepository businessRepository, ISubCategoryRepository subCategoryRepository, 
-            IUserIdentifier userIdentifier)
+            IUserIdentifier userIdentifier, IPurchaseCompletedRepository completedRepository)
         {
             _unitOfWork = unitOfWork;
             _purchaseRepository = purchaseRepository;
@@ -39,6 +40,7 @@ namespace _6MKT.BackOffice.Domain.Services
             _businessRepository = businessRepository;
             _subCategoryRepository = subCategoryRepository;
             _userIdentifier = userIdentifier;
+            _completedRepository = completedRepository;
         }
 
         public async Task AddAsync(PurchaseEntity purchaseEntity)
@@ -101,11 +103,41 @@ namespace _6MKT.BackOffice.Domain.Services
 
         public async Task<PageResponse<PurchaseEntity>> GetAllAsync(PageRequest page) =>
             await _purchaseRepository.GetAll(page);
-        
-        public async Task<PageResponse<Purchases>> GetAllListAsync(PageRequest page) =>
-            await _purchaseRepository.GetAllAsync(page);
 
-        public async Task<PageResponse<Purchases>> GetAllByNaturalPersonAsync(PageRequest page) =>
-            await _purchaseRepository.GetAllByNaturalPersonAsync(page);
+        public async Task<PageResponse<Purchases>> GetAllListAsync(PageRequest page)
+        {
+            var response = await _purchaseRepository.GetAllAsync(page);
+            await HandlerOffer(response);
+            return response;
+        }
+            
+
+        public async Task<PageResponse<Purchases>> GetAllByNaturalPersonAsync(PageRequest page)
+        {
+            var response = await _purchaseRepository.GetAllByNaturalPersonAsync(page);
+
+            await HandlerOffer(response);
+
+            return response;
+        }
+
+        private async Task HandlerOffer(PageResponse<Purchases> response)
+        {
+            foreach (var purchase in response.Data)
+            {
+                var offer = await _completedRepository.GetByPurchaseId(purchase.Id);
+
+                if (offer == null)
+                    continue;
+
+                purchase.Offer = new Offers
+                {
+                    Description = offer.Offer.Description,
+                    TradeName = offer.Offer.Business.TradeName,
+                    InStock = offer.Offer.InStock,
+                    Price = offer.Offer.Price
+                };
+            }
+        }
     }
 }

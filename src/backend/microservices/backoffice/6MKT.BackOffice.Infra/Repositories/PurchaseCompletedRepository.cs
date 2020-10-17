@@ -19,5 +19,9 @@ namespace _6MKT.BackOffice.Infra.Repositories
                     .Include(x => x.Purchase)
                     .Include(x => x.Offer)
                     .FirstOrDefaultAsync(x => x.Id == id);
+
+        public async Task<PurchaseCompletedEntity> GetByPurchaseId(long id) =>
+            await NoTracking().Include(x => x.Offer).ThenInclude(x => x.Business)
+                .FirstOrDefaultAsync(x => x.PurchaseId == id);
     }
 }
