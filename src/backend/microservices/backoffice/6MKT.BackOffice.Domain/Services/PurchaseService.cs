@@ -58,7 +58,10 @@ namespace _6MKT.BackOffice.Domain.Services
         private async Task SendEmailToAllBusinessOnSubcategory(PurchaseEntity purchase)
         {
             var subCategory = await _subCategoryRepository.GetById(purchase.SubCategoryId);
-            var emails = await _businessRepository.GetEmailsBySubcategoryAsync(purchase.SubCategoryId);
+            var emails = (await _businessRepository.GetEmailsBySubcategoryAsync(purchase.SubCategoryId)).ToList();
+
+            if (!emails.Any())
+                return;
 
             await _emailProvider.SendEmailToAllBusinessOnSubcategoryAsync(new EmailsToBusiness
             {
