@@ -60,6 +60,7 @@ namespace _6MKT.BackOffice.Infra.Repositories
                 .Include(x => x.Offers)
                 .ThenInclude(x => x.Business)
                 .Include(x => x.NaturalPerson)
+                .Include(x => x.SubCategory)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 

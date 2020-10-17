@@ -84,11 +84,11 @@ namespace _6MKT.BackOffice.Domain.Services
 
         private async Task<BusinessEntity> ValidationBusiness(long businessId, PurchaseEntity purchase)
         {
-            var businessAllowed =
-                await _businessRepository.VerificationCategoriesBusiness(businessId, purchase.SubCategoryId);
+            //var businessAllowed =
+            //    await _businessRepository.VerificationCategoriesBusiness(businessId, purchase.SubCategoryId);
 
-            if (!businessAllowed)
-                throw new ConflictException(MessageExceptionConstants.NotInYourSubcategoriesException);
+            //if (!businessAllowed)
+            //    throw new ConflictException(MessageExceptionConstants.NotInYourSubcategoriesException);
 
             var business = await _businessRepository.GetById(businessId);
 
